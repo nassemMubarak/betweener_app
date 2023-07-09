@@ -1,8 +1,8 @@
+import 'package:betweener_app/bottom_navigation_bar/bnb_page.dart';
 import 'package:betweener_app/core/extensions/context_extension.dart';
 import 'package:betweener_app/core/widgets/loading_widget.dart';
 import 'package:betweener_app/feature/auth/prssentation/bloc/auth/auth_bloc.dart';
 import 'package:betweener_app/feature/auth/prssentation/widgets/login_page/login_form_widget.dart';
-import 'package:betweener_app/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,7 +24,7 @@ class LoginPage extends StatelessWidget {
         } else if (state is AuthMessageErrorState) {
           context.showSnackBarError(message: state.message);
         } else if (state is AuthLoadedUserState) {
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => const MainPage()), (route) => false);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => BnbPage()), (route) => false);
         }
       },
       builder: (context, state) {
