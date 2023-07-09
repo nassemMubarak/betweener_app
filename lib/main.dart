@@ -1,6 +1,7 @@
 import 'package:betweener_app/core/theme/app_theme_data.dart';
 import 'package:betweener_app/feature/auth/prssentation/bloc/auth/auth_bloc.dart';
 import 'package:betweener_app/feature/auth/prssentation/pages/login_page.dart';
+import 'package:betweener_app/feature/auth/prssentation/pages/onboarding_page.dart';
 import 'package:betweener_app/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,11 +35,11 @@ class MyApp extends StatelessWidget {
 Widget _initialPage(){
   return BlocBuilder<AuthBloc,AuthState>(builder: (context, state){
     if(state is AuthLoadedUserState){
-      return MainPage();
+      return const MainPage();
     }else if(state is AuthInitial){
-      return LoginPage();
+      return const OnBoardingPage();
     }
-    return LoginPage();
+    return const OnBoardingPage();
   },);
 }
 }
