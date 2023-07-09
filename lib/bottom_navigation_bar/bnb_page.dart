@@ -1,5 +1,6 @@
 import 'package:betweener_app/bottom_navigation_bar/bloc/bnb/bnb_bloc.dart';
 import 'package:betweener_app/core/theme/app_theme_data.dart';
+import 'package:betweener_app/feature/links/presentation/screens/add_link.dart';
 import 'package:betweener_app/feature/links/presentation/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +29,11 @@ class BnbPage extends StatelessWidget {
             return Scaffold(
               floatingActionButton: state.pageIndex == 2
                   ? FloatingActionButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => AddLink(),
+                        ));
+                      },
                       backgroundColor: Theme.of(context).primaryColor,
                       child: Icon(
                         Icons.add,

@@ -1,4 +1,5 @@
 import 'package:betweener_app/core/extensions/num_extension.dart';
+import 'package:betweener_app/feature/links/presentation/screens/edit_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -77,7 +78,13 @@ class UserCard extends StatelessWidget {
           Positioned(
             right: 0,
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return EditProfile();
+                  },
+                ));
+              },
               icon: const Icon(
                 Icons.edit_outlined,
                 color: Colors.white,
