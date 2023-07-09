@@ -4,10 +4,10 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failure.dart';
 
-class GetMyLinks {
+class GetMyLinksUseCase {
   final Repository repository;
 
-  GetMyLinks({required this.repository});
+  GetMyLinksUseCase({required this.repository});
 
   Future<Either<Failure, List<Link>>> call() async {
     return await repository.getMyLinks();
