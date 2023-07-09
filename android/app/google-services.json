@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1048405442650",
+    "project_id": "betweener-app",
+    "storage_bucket": "betweener-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048405442650:android:14f4a42d7319d678ba9863",
+        "android_client_info": {
+          "package_name": "com.example.betweener_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1048405442650-ranjg31kebs7q732j9rpt5qihjjjs9fd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCX0XkJj6OMz0YCXajOPFldEO1us-WWd_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1048405442650-ranjg31kebs7q732j9rpt5qihjjjs9fd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

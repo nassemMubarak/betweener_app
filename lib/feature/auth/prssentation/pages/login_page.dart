@@ -29,9 +29,9 @@ class LoginPage extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is AuthLoadingState) {
-          return LoadingWidget();
+          return const LoadingWidget();
         }
-        return LoginFormWidget();
+        return const LoginFormWidget();
       },
     );
   }
