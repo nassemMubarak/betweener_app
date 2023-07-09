@@ -7,8 +7,6 @@ import 'package:dartz/dartz.dart';
 abstract class ShareRepository{
   Future<Either<Failure,User>> scanAccount({required Map scanData});
   Future<Either<Failure,List<Share>>> getAlShare();
-  Future<Either<Failure,Unit>> addShare({required Share share});
-  Future<Either<Failure,Unit>> updateShare({required Share share});
-  Future<Either<Failure,Unit>> removeShare({required Share share});
+    Future<Either<Failure,Unit>> addShare({required Share share});
 
 }

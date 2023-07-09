@@ -5,3 +5,4 @@ const String UPDATE_PASSWORED_SUCCESS = 'Password changed successfully';
 const String SUCCESS_VERIFY_EMAIL = 'The email has been confirmed successfully';
 const LOGOUT_MESSAGE = "Logout Successfully";
 const THE_PROCESS_IS_SUCCESSFUL = "The process is successful";
+const ADD_SHARE_SUCCESSFUL = "Add share successful";
