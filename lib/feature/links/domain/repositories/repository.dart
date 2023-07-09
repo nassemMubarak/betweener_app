@@ -5,7 +5,7 @@ import '../entities/link.dart';
 
 abstract class Repository {
   Future<Either<Failure, List<Link>>> getMyLinks();
-  Future<Either<Failure, Unit>> editLink();
-  Future<Either<Failure, Unit>> removeLink();
-  Future<Either<Failure, Unit>> addLink();
+  Future<Either<Failure, Unit>> editLink({required Link link});
+  Future<Either<Failure, Unit>> removeLink({required String linkId});
+  Future<Either<Failure, Unit>> addLink({required Link link});
 }
