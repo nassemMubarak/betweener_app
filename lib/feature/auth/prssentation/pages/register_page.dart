@@ -25,7 +25,7 @@ class RegisterPage extends StatelessWidget {
         } else if (state is AuthMessageErrorState) {
           context.showSnackBarError(message: state.message);
         } else if (state is AuthLoadedUserState) {
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => BnbPage()), (route) => false);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => BnbPage(user: state.user,)), (route) => false);
         }
       },
       builder: (context, state) {
