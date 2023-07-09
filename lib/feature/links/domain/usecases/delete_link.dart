@@ -7,7 +7,7 @@ class RemoveLink {
 
   RemoveLink({required this.repository});
 
-  Future<Either<Failure, Unit>> call() async {
-    return await repository.editLink();
+  Future<Either<Failure, Unit>> call({required String linkId}) async {
+    return await repository.removeLink(linkId: linkId);
   }
 }
