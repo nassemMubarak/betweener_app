@@ -1,4 +1,3 @@
-import 'package:betweener_app/core/util/snackbar_message.dart';
 import 'package:betweener_app/core/widgets/loading_widget.dart';
 import 'package:betweener_app/feature/auth/prssentation/bloc/auth/auth_bloc.dart';
 import 'package:betweener_app/feature/auth/prssentation/widgets/login_page/login_form_widget.dart';
@@ -19,16 +18,16 @@ class LoginPage extends StatelessWidget {
   Widget _buildBody() {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
-        if(state is AuthMessageSuccessState){
-            SnackBarMessage().showSnackBarSuccess(message: state.message, context: context);
-        }else if(state is AuthMessageErrorState){
-            SnackBarMessage().showSnackBarError(message: state.message, context: context);
-        }else if(state is AuthLoadedUserState){
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>const MainPage()), (route) => false);
+        if (state is AuthMessageSuccessState) {
+          SnackBarMessage().showSnackBarSuccess(message: state.message, context: context);
+        } else if (state is AuthMessageErrorState) {
+          SnackBarMessage().showSnackBarError(message: state.message, context: context);
+        } else if (state is AuthLoadedUserState) {
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => const MainPage()), (route) => false);
         }
       },
       builder: (context, state) {
-        if(state is AuthLoadingState){
+        if (state is AuthLoadingState) {
           return LoadingWidget();
         }
         return LoginFormWidget();
