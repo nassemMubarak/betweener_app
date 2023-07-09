@@ -1,6 +1,5 @@
 import 'package:betweener_app/core/widgets/elevation_button_widget.dart';
 import 'package:betweener_app/feature/auth/prssentation/pages/login_page.dart';
-import 'package:betweener_app/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

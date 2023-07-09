@@ -9,17 +9,30 @@ import 'package:betweener_app/feature/auth/domain/usecase/login_with_google.dart
 import 'package:betweener_app/feature/auth/domain/usecase/logout.dart';
 import 'package:betweener_app/feature/auth/domain/usecase/register_user.dart';
 import 'package:betweener_app/feature/auth/prssentation/bloc/auth/auth_bloc.dart';
+import 'package:betweener_app/feature/share/data/datasourses/share_local_data_source.dart';
+import 'package:betweener_app/feature/share/data/datasourses/share_remote_data_soursce.dart';
+import 'package:betweener_app/feature/share/data/repositorises/share_repository_impl.dart';
+import 'package:betweener_app/feature/share/domain/repositorises/share_repository.dart';
+import 'package:betweener_app/feature/share/domain/usecases/add_share.dart';
+import 'package:betweener_app/feature/share/domain/usecases/get_al_share.dart';
+import 'package:betweener_app/feature/share/domain/usecases/scan_account.dart';
+import 'package:betweener_app/feature/share/presentation/bloc/share/share_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
 GetIt sl = GetIt.instance;
 
-Future<void> init()async{
+Future<void> init() async {
   ///Feature Auth
   // Bloc
-  sl.registerFactory(() => AuthBloc(loginUserUseCase: sl(), registerUserUseCase: sl(), getCurrentUserUseCase: sl(), loginWithGoogleUserUseCase: sl(), logoutUseCase: sl()));
-
+  sl.registerFactory(() => AuthBloc(
+      loginUserUseCase: sl(),
+      registerUserUseCase: sl(),
+      getCurrentUserUseCase: sl(),
+      loginWithGoogleUserUseCase: sl(),
+      logoutUseCase: sl()));
   //Use Case
   sl.registerLazySingleton(() => GetCurrentUserUseCase(repository: sl()));
   sl.registerLazySingleton(() => LoginUserUseCase(repository: sl()));
@@ -28,21 +41,40 @@ Future<void> init()async{
   sl.registerLazySingleton(() => LogoutUseCase(repository: sl()));
 
   // Repository
-  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(localDataSource: sl(), remoteDataSource: sl(), networkInfo: sl()));
+  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(
+      localDataSource: sl(), remoteDataSource: sl(), networkInfo: sl()));
 
   // Data Source
-  sl.registerLazySingleton<AuthLocalDataSource>(() => AuthLocalDataSourceImpl(preferences: sl()));
-  sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(client: sl()));
+  sl.registerLazySingleton<AuthLocalDataSource>(
+      () => AuthLocalDataSourceImpl(preferences: sl()));
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+      () => AuthRemoteDataSourceImpl(client: sl()));
 
   //Network
-  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(connectionChecker: sl()));
+  sl.registerLazySingleton<NetworkInfo>(
+      () => NetworkInfoImpl(connectionChecker: sl()));
 
   //External
-  final SharedPreferences preferences =await SharedPreferences.getInstance();
+  final SharedPreferences preferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => preferences);
   sl.registerLazySingleton(() => http.Client());
   sl.registerLazySingleton(() => InternetConnectionChecker());
 
-
-
+  ///Share Feature
+  //bloc
+  sl.registerFactory(() => ShareBloc(
+      addShareRepository: sl(),
+      getAllSHareUseCase: sl(),
+      scanAccountUseCase: sl()));
+  //Use Case
+  sl.registerLazySingleton(() => AddShareRepository(repository: sl()));
+  sl.registerLazySingleton(() => GetAllSHareUseCase(repository: sl()));
+  sl.registerLazySingleton(() => ScanAccountUseCase(repository: sl()));
+  // Repository
+  sl.registerLazySingleton<ShareRepository>(() => ShareRepositoryImpl(networkInfo: sl(), localDataSource: sl(), remoteDataSource: sl()));
+  // Data Source
+  sl.registerLazySingleton<ShareRemoteDataSource>(
+          () => ShareRemoteDataSourceImpl(client: sl()));
+  sl.registerLazySingleton<ShareLocalDataSource>(
+          () => ShareLocalDataSourceImpl(preferences: sl()));
 }
