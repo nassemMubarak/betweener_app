@@ -3,6 +3,7 @@ import 'package:betweener_app/core/theme/app_theme_data.dart';
 import 'package:betweener_app/feature/links/presentation/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BnbPage extends StatelessWidget {
   BnbPage({Key? key}) : super(key: key);
@@ -25,12 +26,23 @@ class BnbPage extends StatelessWidget {
         builder: (context, state) {
           if (state is BnbInitial) {
             return Scaffold(
+              floatingActionButton: state.pageIndex == 2
+                  ? FloatingActionButton(
+                      onPressed: () {},
+                      backgroundColor: Theme.of(context).primaryColor,
+                      child: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 32.r,
+                      ),
+                    )
+                  : null,
               bottomNavigationBar: Padding(
-                padding: const EdgeInsets.only(bottom: 32, right: 22, left: 22),
+                padding: EdgeInsets.only(bottom: 32.h, right: 22.w, left: 22.w),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(60)),
                   child: SizedBox(
-                    height: 60,
+                    height: 60.h,
                     child: BottomNavigationBar(
                       showSelectedLabels: false,
                       showUnselectedLabels: false,
@@ -40,23 +52,25 @@ class BnbPage extends StatelessWidget {
                         BlocProvider.of<BnbBloc>(context).add(ChangeBnbEvent(index));
                       },
                       currentIndex: state.pageIndex,
-                      items: const [
+                      items: [
                         BottomNavigationBarItem(
                           icon: ImageIcon(
-                            AssetImage('images/location.png'),
-                            size: 24,
+                            const AssetImage('images/location.png'),
+                            size: 24.r,
                           ),
                           label: '',
                         ),
                         BottomNavigationBarItem(
                           icon: ImageIcon(
-                            AssetImage('images/home.png'),
+                            const AssetImage('images/home.png'),
+                            size: 24.r,
                           ),
                           label: '',
                         ),
                         BottomNavigationBarItem(
                           icon: ImageIcon(
-                            AssetImage('images/profile.png'),
+                            const AssetImage('images/profile.png'),
+                            size: 24.r,
                           ),
                           label: '',
                         ),
