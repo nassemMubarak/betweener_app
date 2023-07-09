@@ -1,7 +1,8 @@
 import 'package:betweener_app/bottom_navigation_bar/bloc/bnb/bnb_bloc.dart';
 import 'package:betweener_app/core/theme/app_theme_data.dart';
-import 'package:betweener_app/feature/links/presentation/screens/add_link.dart';
+import 'package:betweener_app/feature/active_sharing/presentation/screens/active_sharing.dart';
 import 'package:betweener_app/feature/auth/domain/entities/user.dart';
+import 'package:betweener_app/feature/links/presentation/screens/add_link.dart';
 import 'package:betweener_app/feature/links/presentation/screens/profile_screen.dart';
 import 'package:betweener_app/feature/share/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
@@ -10,21 +11,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BnbPage extends StatelessWidget {
   final User user;
-  BnbPage({Key? key, required this.user}) : super(key: key);
+  BnbPage({required this.user, Key? key}) : super(key: key);
+  final List<Widget> body = [
+    const ActiveSharing(),
+    HomePage(),
+    const ProfileScreen(),
+  ];
+  final List<AppBar> appBars = [
+    ActiveSharing.appBar(),
+    HomePage.appBar(),
+    ProfileScreen.appBar(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> body = [
-      Text('a'),
-      HomePage(user: user),
-      const ProfileScreen(),
-    ];
-    final List<AppBar> appBars = [
-      AppBar(),
-      HomePage.appBar(),
-      ProfileScreen.appBar(),
-    ];
-
     return BlocProvider<BnbBloc>(
       create: (context) => BnbBloc(),
       child: BlocBuilder<BnbBloc, BnbState>(

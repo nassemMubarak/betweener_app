@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserCard extends StatelessWidget {
+  final bool isUser;
+
   const UserCard({
+    this.isUser = false,
     super.key,
   });
 
@@ -63,32 +66,59 @@ class UserCard extends StatelessWidget {
                     ),
                   ),
                   6.height(),
-                  Text(
-                    '+9700000000',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12.sp,
+                  Visibility(
+                    visible: !isUser,
+                    replacement: SizedBox(
+                      width: 80.w,
+                      height: 25.h,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: const Color(0xFFFFD465),
+                          minimumSize: Size(double.infinity, 48.h),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7.r),
+                          ),
+                        ),
+                        child: Text('Follow',
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w600,
+                            )),
+                      ),
+                    ),
+                    child: Text(
+                      '+9700000000',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12.sp,
+                      ),
                     ),
                   ),
                 ],
               ),
             ],
           ),
-          Positioned(
-            right: 0,
-            child: IconButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return EditProfile();
-                  },
-                ));
-              },
-              icon: const Icon(
-                Icons.edit_outlined,
-                color: Colors.white,
-                size: 24,
+          Visibility(
+            visible: !isUser,
+            child: Positioned(
+              right: 0,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return EditProfile();
+                    },
+                  ));
+                },
+                icon: const Icon(
+                  Icons.edit_outlined,
+                  color: Colors.white,
+                  size: 24,
+                ),
               ),
             ),
           )

@@ -5,7 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ListOfLinks extends StatelessWidget {
+  final bool isUser;
+
   const ListOfLinks({
+    this.isUser = false,
     super.key,
   });
 
@@ -20,38 +23,40 @@ class ListOfLinks extends StatelessWidget {
             return Column(
               children: [
                 Slidable(
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    children: [
-                      SizedBox(
-                        width: 58,
-                        height: 58,
-                        child: SlidableAction(
-                          onPressed: (context) {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => EditLink(),
-                            ));
-                          },
-                          backgroundColor: const Color(0xFFFFD465),
-                          foregroundColor: Colors.white,
-                          icon: Icons.edit,
-                          borderRadius: BorderRadius.circular(12.r),
+                  endActionPane: isUser
+                      ? null
+                      : ActionPane(
+                          motion: const ScrollMotion(),
+                          children: [
+                            SizedBox(
+                              width: 58,
+                              height: 58,
+                              child: SlidableAction(
+                                onPressed: (context) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => EditLink(),
+                                  ));
+                                },
+                                backgroundColor: const Color(0xFFFFD465),
+                                foregroundColor: Colors.white,
+                                icon: Icons.edit,
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                            ),
+                            12.width(),
+                            SizedBox(
+                              width: 58,
+                              height: 58,
+                              child: SlidableAction(
+                                onPressed: (context) {},
+                                backgroundColor: Color(0xFFFE4A49),
+                                foregroundColor: Colors.white,
+                                icon: Icons.delete,
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      12.width(),
-                      SizedBox(
-                        width: 58,
-                        height: 58,
-                        child: SlidableAction(
-                          onPressed: (context) {},
-                          backgroundColor: Color(0xFFFE4A49),
-                          foregroundColor: Colors.white,
-                          icon: Icons.delete,
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                      ),
-                    ],
-                  ),
                   child: ListTile(
                     title: Container(
                       height: 58.h,
