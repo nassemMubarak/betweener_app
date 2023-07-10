@@ -20,13 +20,7 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // TextWidget(text: 'Hello, ${user.name}',color: Color(0xFF2D2B4E),fontWeight: FontWeight.w600,fontSize: 20.sp,),
-            TextWidget(
-              text: 'Hello, Ahmed!',
-              color: Color(0xFF2D2B4E),
-              fontWeight: FontWeight.w600,
-              fontSize: 20.sp,
-            ),
+            TextWidget(text: 'Hello, ${user.name}',color: Color(0xFF2D2B4E),fontWeight: FontWeight.w600,fontSize: 20.sp,),
             SizedBox(height: 16.h),
             Center(child: Image.asset('images/scan_image.png', width: 290.w, height: 300.h)),
             SizedBox(height: 40.h),
