@@ -4,6 +4,8 @@ import 'package:betweener_app/feature/share/presentation/widgets/home_page/conta
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../auth/domain/entities/user.dart';
+
 class HomePage extends StatelessWidget {
   final User user;
   const HomePage({Key? key,required this.user}) : super(key: key);
