@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
           splitScreenMode: true,
           builder: (context, child) {
             return MaterialApp(
-              // home: _initialPage(),
-              home: BnbPage(user: User(name: 'name', email: 'email', phone: 'phone', role: 'role', latitude: 'latitude', longitude: 'longitude', isVerifyEmail: true, codeVerifyEmail: 'codeVerifyEmail', token: 'token')),
+              home: _initialPage(),
+              // home: BnbPage(user: User(name: 'name', email: 'email', phone: 'phone', role: 'role', latitude: 'latitude', longitude: 'longitude', isVerifyEmail: true, codeVerifyEmail: 'codeVerifyEmail', token: 'token')),
               theme: AppThemeData.lightTheme,
               debugShowCheckedModeBanner: false,
             );
