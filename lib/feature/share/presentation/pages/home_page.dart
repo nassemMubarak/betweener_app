@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePage extends StatelessWidget {
-  // final User user;
-  const HomePage({Key? key}) : super(key: key);
+  final User user;
+  const HomePage({Key? key,required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
