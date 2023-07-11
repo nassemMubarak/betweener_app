@@ -1,42 +1,43 @@
 import 'dart:convert';
 
 import 'package:betweener_app/core/error/exception.dart';
-import 'package:betweener_app/core/error/failure.dart';
 import 'package:dartz/dartz.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../core/shared_pref/shared_pref.dart';
 import '../models/user_model.dart';
-abstract class AuthLocalDataSource{
+
+abstract class AuthLocalDataSource {
   Future<UserModel> getCurrentUser();
   Future<Unit> saveUser({required UserModel userModel});
   Future<Unit> logout();
 }
-const CACHED_USER = 'CACHED_USER';
 
-class AuthLocalDataSourceImpl implements AuthLocalDataSource{
-   final SharedPreferences preferences;
+const String CACHED_USER = 'CACHED_USER';
 
-   AuthLocalDataSourceImpl({required this.preferences});
-   @override
-   Future<Unit> saveUser({required UserModel userModel}) async{
-      await preferences.setString(CACHED_USER, json.encode(userModel));
-      return Future.value(unit);
-   }
+class AuthLocalDataSourceImpl implements AuthLocalDataSource {
+  // final SharedPreferences preferences;
+
+  // AuthLocalDataSourceImpl({required this.preferences});
+  AuthLocalDataSourceImpl();
   @override
-  Future<UserModel> getCurrentUser() async{
-    final jsonString = preferences.getString(CACHED_USER);
-    if(jsonString != null){
-        return UserModel.fromJson(json.decode(jsonString));
-    }else{
+  Future<Unit> saveUser({required UserModel userModel}) async {
+    await SharedPrefController().save(key: CACHED_USER, value: json.encode(userModel));
+    return Future.value(unit);
+  }
+
+  @override
+  Future<UserModel> getCurrentUser() async {
+    final jsonString = SharedPrefController().get(key: CACHED_USER);
+    if (jsonString != null) {
+      return UserModel.fromJson(json.decode(jsonString));
+    } else {
       throw EmptyCacheException();
     }
   }
 
   @override
-  Future<Unit> logout()async {
-    await preferences.remove(CACHED_USER);
+  Future<Unit> logout() async {
+    await SharedPrefController().removeKey(key: CACHED_USER);
     return Future.value(unit);
   }
-
-
-
 }

@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:betweener_app/core/string/api_path_strings.dart';
 import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../../core/error/exception.dart';
 import '../models/user_model.dart';
-import 'package:http/http.dart' as http;
 
 abstract class AuthRemoteDataSource {
   Future<UserModel> loginUser({required Map authData});
@@ -15,6 +15,7 @@ abstract class AuthRemoteDataSource {
   Future<UserModel> loginWithGoogleUser({required Map authData});
 }
 
+const BASE_URI = 'https://laundry-izfq.onrender.com';
 
 class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
   final http.Client client;
@@ -28,10 +29,8 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       "email": authData['email'],
       "password": authData['password'],
       "password_confirmation": authData['password'],
-
     };
-    final response =
-        await client.post(Uri.parse(ApiPathStrings.BASE_URL+ApiPathStrings.RGISTER_URL), body: body);
+    final response = await client.post(Uri.parse(ApiPathStrings.BASE_URL + ApiPathStrings.RGISTER_URL), body: body);
     return _loginOrRegisterUser(response);
   }
 
@@ -42,8 +41,7 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       "password": authData['password'],
     };
 
-    final response =
-        await client.post(Uri.parse(ApiPathStrings.BASE_URL+ApiPathStrings.LOGIN_URL), body: body);
+    final response = await client.post(Uri.parse(ApiPathStrings.BASE_URL + ApiPathStrings.LOGIN_URL), body: body);
     print(response.statusCode);
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return _loginOrRegisterUser(response);
@@ -62,8 +60,7 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       "password": authData['password'],
       "password_confirmation": authData['password_confirmation'],
     };
-    final response =
-        await client.post(Uri.parse('${ApiPathStrings.BASE_URL}/auth/signup'), body: body);
+    final response = await client.post(Uri.parse('${ApiPathStrings.BASE_URL}/auth/signup'), body: body);
     return _loginOrRegisterUser(response);
   }
 
@@ -71,7 +68,7 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       final decodeJson = jsonDecode(response.body);
       print(decodeJson);
-      final jsonUser = decodeJson['user'] ;
+      final jsonUser = decodeJson['user'];
       jsonUser['token'] = decodeJson['token'];
       UserModel userModel = UserModel.fromJson(jsonUser);
       return userModel;
