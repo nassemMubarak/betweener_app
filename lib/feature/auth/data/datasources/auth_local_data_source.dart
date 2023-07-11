@@ -18,9 +18,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource{
    AuthLocalDataSourceImpl({required this.preferences});
    @override
    Future<Unit> saveUser({required UserModel userModel}) async{
-     print('------------------------------------------------');
       await preferences.setString(CACHED_USER, json.encode(userModel));
-      print('+++++++++++++++++++++++++++++++++++++${preferences.getString(CACHED_USER)}');
       return Future.value(unit);
    }
   @override

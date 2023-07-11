@@ -1,33 +1,34 @@
-
 import 'package:betweener_app/feature/auth/domain/entities/user.dart';
 
-class UserModel extends User{
-  UserModel({required super.name, required super.email, required super.phone, required super.role, required super.latitude, required super.longitude, required super.isVerifyEmail, required super.codeVerifyEmail, required super.token});
-  factory UserModel.fromJson(Map<String,dynamic> json){
+class UserModel extends User {
+  UserModel(
+      {required super.name,
+      required super.email,
+      required super.token,
+      required super.id,
+      required super.updated_at,
+      required super.created_at,
+      });
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       name: json['name'],
       email: json['email'],
-      phone: json['phone'],
-      role: json['role'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
-      isVerifyEmail: json['isVerifyEmail'],
-      codeVerifyEmail: json['codeVerifyEmail'],
+      id: json['id'],
+      updated_at: json['updated_at'],
+      created_at: json['created_at'],
       token: json['token'],
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
       'name': name,
       'email': email,
-      'phone': phone,
-      'role': role,
-      'latitude': latitude,
-      'longitude': longitude,
-      'isVerifyEmail': isVerifyEmail,
-      'codeVerifyEmail': codeVerifyEmail,
+      'id': id,
+      'updated_at': updated_at,
+      'created_at': created_at,
       'token': token
     };
   }
-
 }
