@@ -80,10 +80,7 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
       "name": _nameController.text,
       "email": _emailController.text,
       "password": _passwordController.text,
-      "phone": '+970${generateRandomNumber()}',
-      "role":  'user',
-      "latitude": '65666564',
-      "longitude": '5454545'
+      "password_confirmation":_passwordController.text
     };
     final validte = _formKey.currentState!.validate();
     if(validte){
@@ -91,14 +88,5 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
           .add(RegisterUserEvent(authData: authData));
     }
   }
-  String generateRandomNumber() {
-    Random random = Random();
-    String randomNumber = '';
 
-    for (int i = 0; i < 9; i++) {
-      randomNumber += random.nextInt(10).toString();
-    }
-
-    return randomNumber;
-  }
 }

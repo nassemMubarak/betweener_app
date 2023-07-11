@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:betweener_app/core/string/api_path_strings.dart';
 import 'package:http/http.dart';
 
 import '../../../../core/error/exception.dart';
@@ -14,7 +15,6 @@ abstract class AuthRemoteDataSource {
   Future<UserModel> loginWithGoogleUser({required Map authData});
 }
 
-const BASE_URI = 'https://laundry-izfq.onrender.com';
 
 class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
   final http.Client client;
@@ -27,13 +27,11 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       "name": authData['name'],
       "email": authData['email'],
       "password": authData['password'],
-      "phone": authData['phone'],
-      "role": authData['role'],
-      "latitude": authData['latitude'],
-      "longitude": authData['longitude']
+      "password_confirmation": authData['password'],
+
     };
     final response =
-        await client.post(Uri.parse('$BASE_URI/auth/signup'), body: body);
+        await client.post(Uri.parse(ApiPathStrings.BASE_URL+ApiPathStrings.RGISTER_URL), body: body);
     return _loginOrRegisterUser(response);
   }
 
@@ -43,13 +41,12 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       "email": authData['email'],
       "password": authData['password'],
     };
+
     final response =
-        await client.post(Uri.parse('$BASE_URI/auth/login'), body: body);
-      print(response.body);
+        await client.post(Uri.parse(ApiPathStrings.BASE_URL+ApiPathStrings.LOGIN_URL), body: body);
+    print(response.statusCode);
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      final decodeJson = json.decode(response.body);
-      UserModel userModel = UserModel.fromJson(decodeJson['user']);
-      return userModel;
+      return _loginOrRegisterUser(response);
     } else if (response.statusCode >= 400 && response.statusCode < 500) {
       throw InvalidDataException();
     } else {
@@ -63,20 +60,20 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       "name": authData['name'],
       "email": authData['email'],
       "password": authData['password'],
-      "phone": authData['phone'],
-      "role": authData['role'],
-      "latitude": authData['latitude'],
-      "longitude": authData['longitude']
+      "password_confirmation": authData['password_confirmation'],
     };
     final response =
-        await client.post(Uri.parse('$BASE_URI/auth/signup'), body: body);
+        await client.post(Uri.parse('${ApiPathStrings.BASE_URL}/auth/signup'), body: body);
     return _loginOrRegisterUser(response);
   }
 
   Future<UserModel> _loginOrRegisterUser(Response response) async {
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      final decodeJson = json.decode(response.body);
-      UserModel userModel = UserModel.fromJson(decodeJson['user']);
+      final decodeJson = jsonDecode(response.body);
+      print(decodeJson);
+      final jsonUser = decodeJson['user'] ;
+      jsonUser['token'] = decodeJson['token'];
+      UserModel userModel = UserModel.fromJson(jsonUser);
       return userModel;
     } else if (response.statusCode >= 400 && response.statusCode < 500) {
       throw InvalidDataException();
