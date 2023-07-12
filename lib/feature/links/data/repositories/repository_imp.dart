@@ -21,10 +21,10 @@ class RepositoryImp implements Repository {
   });
 
   @override
-  Future<Either<Failure, List<Link>>> getMyLinks(String token) async {
+  Future<Either<Failure, List<Link>>> getMyLinks() async {
     if (await networkInfo.isConnected) {
       try {
-        List<LinkModel> links = await remoteDataSource.getMyLinks(token);
+        List<LinkModel> links = await remoteDataSource.getMyLinks();
         localDataSource.cacheMyLinks(links);
         return Right(links);
       } on ServerException {
@@ -44,7 +44,7 @@ class RepositoryImp implements Repository {
   Future<Either<Failure, Unit>> addLink({required Link link}) async {
     return await _addEditRemoveRepo(() async {
       final LinkModel linkModel = linkEntityToModel(link);
-      await remoteDataSource.addLink(linkModel: linkModel);
+      return await remoteDataSource.addLink(linkModel: linkModel);
     });
   }
 
@@ -52,14 +52,14 @@ class RepositoryImp implements Repository {
   Future<Either<Failure, Unit>> editLink({required Link link}) async {
     return await _addEditRemoveRepo(() async {
       final LinkModel linkModel = linkEntityToModel(link);
-      await remoteDataSource.editLink(linkModel: linkModel);
+      return await remoteDataSource.editLink(linkModel: linkModel);
     });
   }
 
   @override
   Future<Either<Failure, Unit>> removeLink({required String linkId}) async {
     return await _addEditRemoveRepo(() async {
-      await remoteDataSource.removeLink(linkId: linkId);
+      return await remoteDataSource.removeLink(linkId: linkId);
     });
   }
 

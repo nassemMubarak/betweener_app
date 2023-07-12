@@ -21,7 +21,20 @@ class LinkModel extends Link {
       updatedAt: map['updated_at'],
       title: map['title'],
       isActive: map['isActive'],
-      username: map['username'],
+      username: map['username'] ?? '',
+    );
+  }
+
+  factory LinkModel.fromLink({required Link link}) {
+    return LinkModel(
+      username: link.username,
+      link: link.link,
+      id: link.id,
+      isActive: link.isActive,
+      title: link.title,
+      createdAt: link.createdAt,
+      userId: link.userId,
+      updatedAt: link.updatedAt,
     );
   }
 

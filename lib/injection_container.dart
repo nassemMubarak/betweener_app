@@ -19,6 +19,7 @@ import 'package:betweener_app/feature/links/domain/usecases/delete_link_usecase.
 import 'package:betweener_app/feature/links/domain/usecases/edit_link_usecase.dart';
 import 'package:betweener_app/feature/links/domain/usecases/get_my_links_usecase.dart';
 import 'package:betweener_app/feature/links/presentation/bolc/link/link_bloc.dart';
+import 'package:betweener_app/feature/links/presentation/bolc/link_update/link_update_bloc.dart';
 import 'package:betweener_app/feature/share/data/datasourses/share_local_data_source.dart';
 import 'package:betweener_app/feature/share/data/datasourses/share_remote_data_soursce.dart';
 import 'package:betweener_app/feature/share/data/repositorises/share_repository_impl.dart';
@@ -75,7 +76,8 @@ Future<void> init() async {
 
   /// Link usecase
   ///bloc
-  sl.registerFactory(() => LinkBloc(editLinkUseCase: sl(), removeLinkUseCase: sl(), addLinkUseCase: sl(), getMyLinksUseCase: sl()));
+  sl.registerFactory(() => LinkBloc(getMyLinksUseCase: sl()));
+  sl.registerFactory(() => LinkUpdateBloc(editLinkUseCase: sl(), removeLinkUseCase: sl(), addLinkUseCase: sl()));
 
   ///usecase
   sl.registerLazySingleton(() => EditLinkUseCase(repository: sl()));

@@ -1,38 +1,25 @@
+import 'package:betweener_app/core/api/api_controller.dart';
 import 'package:betweener_app/core/error/failure.dart';
 import 'package:betweener_app/core/string/failure.dart';
-import 'package:betweener_app/feature/auth/data/datasources/auth_local_data_source.dart';
 import 'package:betweener_app/feature/links/data/models/link_model.dart';
 import 'package:betweener_app/feature/links/domain/entities/link.dart';
-import 'package:betweener_app/feature/links/domain/usecases/add_link_usecase.dart';
-import 'package:betweener_app/feature/links/domain/usecases/delete_link_usecase.dart';
-import 'package:betweener_app/feature/links/domain/usecases/edit_link_usecase.dart';
 import 'package:betweener_app/feature/links/domain/usecases/get_my_links_usecase.dart';
-import 'package:betweener_app/injection_container.dart' as di;
 import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-
-import '../../../../../core/string/messages.dart';
 
 part 'link_event.dart';
 part 'link_state.dart';
 
 class LinkBloc extends Bloc<LinkEvent, LinkState> {
   final GetMyLinksUseCase getMyLinksUseCase;
-  final AddLinkUseCase addLinkUseCase;
-  final EditLinkUseCase editLinkUseCase;
-  final RemoveLinkUseCase removeLinkUseCase;
 
   LinkBloc({
     required this.getMyLinksUseCase,
-    required this.addLinkUseCase,
-    required this.removeLinkUseCase,
-    required this.editLinkUseCase,
   }) : super(LinkInitial()) {
     on<LinkEvent>((event, emit) async {
       if (event is GetMyLinksEvent) {
         emit(LinkLoadingState());
-        final failureOrLinks = await getMyLinksUseCase((await di.sl<AuthLocalDataSource>().getCurrentUser()).token);
+        final failureOrLinks = await getMyLinksUseCase();
         failureOrLinks.fold(
           (failure) {
             emit(LinkErrorState(message: _mapFailureMessage(failure: failure)));
@@ -42,41 +29,41 @@ class LinkBloc extends Bloc<LinkEvent, LinkState> {
               LinkSuccessState(
                 links: links
                     .map<LinkModel>(
-                      (link) => LinkModel(
-                        username: link.username,
-                        link: link.link,
-                        id: link.id,
-                        isActive: link.isActive,
-                        title: link.title,
-                        createdAt: link.createdAt,
-                        userId: link.userId,
-                        updatedAt: link.updatedAt,
-                      ),
+                      (link) => LinkModel.fromLink(link: link),
                     )
                     .toList(),
               ),
             );
           },
         );
-      } else if (event is AddLinkEvent) {
+      } else if (event is UpdateMyLinksEvent) {
         emit(LinkLoadingState());
-        emit(await _editAddRemove(() => addLinkUseCase(link: event.link)));
-      } else if (event is EditLinkEvent) {
-        emit(LinkLoadingState());
-        emit(await _editAddRemove(() => editLinkUseCase(link: event.link)));
-      } else if (event is RemoveLinkEvent) {
-        emit(LinkLoadingState());
-        emit(await _editAddRemove(() => removeLinkUseCase(linkId: event.linkId)));
+        final failureOrLinks = await getMyLinksUseCase();
+        failureOrLinks.fold(
+          (failure) {
+            emit(LinkErrorState(message: _mapFailureMessage(failure: failure)));
+          },
+          (links) {
+            List<LinkModel> listOfLinks = links.map<LinkModel>((link) {
+              if (event.link != null && link.id == event.link!.id && event.isUpdate) {
+                ApiController().updateLinkFromCache(event.index!, event.link!);
+                return LinkModel.fromLink(link: event.link!);
+              }
+              return LinkModel.fromLink(link: link);
+            }).toList();
+            if (!event.isUpdate && event.link != null) {
+              listOfLinks.add(LinkModel.fromLink(link: event.link!));
+              ApiController().addLinkFromCache(event.link!);
+            } else if (event.link == null) {
+              listOfLinks.removeAt(event.index!);
+              ApiController().removeLinkFromCache(event.index!);
+            }
+            emit(
+              LinkSuccessState(links: listOfLinks),
+            );
+          },
+        );
       }
-    });
-  }
-
-  Future<LinkState> _editAddRemove(Future<Either<Failure, Unit>> Function() callBack) async {
-    final failureOrLinks = await callBack();
-    return failureOrLinks.fold((failure) {
-      return LinkErrorState(message: _mapFailureMessage(failure: failure));
-    }, (_) {
-      return const LinkSuccessState(message: THE_PROCESS_IS_SUCCESSFUL);
     });
   }
 

@@ -1,17 +1,12 @@
 import 'package:betweener_app/bottom_navigation_bar/bnb_page.dart';
 import 'package:betweener_app/feature/auth/prssentation/bloc/auth/auth_bloc.dart';
-import 'package:betweener_app/feature/auth/prssentation/pages/handel_finger_page.dart';
-import 'package:betweener_app/feature/auth/prssentation/pages/login_page.dart';
 import 'package:betweener_app/feature/auth/prssentation/pages/onboarding_page.dart';
-import 'package:betweener_app/home_view .dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import './injection_container.dart' as di;
-import 'biometric_helper.dart';
 import 'core/theme/app_theme_data.dart';
-import 'feature/auth/domain/entities/user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +29,8 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => di.sl<AuthBloc>()..add(GetCurrentUserEvent())),
+          BlocProvider<LinkUpdateBloc>(create: (context) => di.sl<LinkUpdateBloc>()),
+          BlocProvider<LinkBloc>(create: (context) => di.sl<LinkBloc>()..add(const GetMyLinksEvent())),
         ],
         child: ScreenUtilInit(
           designSize: const Size(360, 800),

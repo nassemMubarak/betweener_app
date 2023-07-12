@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BnbPage extends StatelessWidget {
   final User user;
+
   const BnbPage({required this.user, Key? key}) : super(key: key);
 
   @override
@@ -36,7 +37,7 @@ class BnbPage extends StatelessWidget {
                   ? FloatingActionButton(
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AddLink(),
+                          builder: (context) => AddLink(username: user.name),
                         ));
                       },
                       backgroundColor: Theme.of(context).primaryColor,
