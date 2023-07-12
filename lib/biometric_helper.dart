@@ -4,8 +4,7 @@ class BiometricHelper {
   final LocalAuthentication _auth = LocalAuthentication();
 
   Future<bool> hasEnrolledBiometrics() async {
-    final List<BiometricType> availableBiometrics =
-    await _auth.getAvailableBiometrics();
+    final List<BiometricType> availableBiometrics = await _auth.getAvailableBiometrics();
 
     if (availableBiometrics.isNotEmpty) {
       return true;
@@ -15,9 +14,8 @@ class BiometricHelper {
 
   Future<bool> authenticate() async {
     final bool didAuthenticate = await _auth.authenticate(
-        localizedReason: 'Please authenticate to proceed',
-
-        options: const AuthenticationOptions(biometricOnly: false),
+      localizedReason: 'Please authenticate to proceed',
+      options: const AuthenticationOptions(biometricOnly: false),
     );
     return didAuthenticate;
   }

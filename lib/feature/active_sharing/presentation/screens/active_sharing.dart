@@ -1,6 +1,10 @@
 import 'package:betweener_app/core/extensions/num_extension.dart';
+import 'package:betweener_app/core/widgets/loading_widget.dart';
+import 'package:betweener_app/feature/active_sharing/presentation/bloc/share/active_sharing_bloc.dart';
 import 'package:betweener_app/feature/active_sharing/presentation/widgets/active_sharing_user_card.dart';
+import 'package:betweener_app/injection_container.dart' as di;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ActiveSharing extends StatelessWidget {
@@ -8,26 +12,44 @@ class ActiveSharing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 42.w),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            40.height(),
-            Center(
-              child: Image.asset(
-                'images/location_big.png',
-                width: 120.w,
-                height: 193.h,
+    return BlocProvider<ActiveSharingBloc>(
+      create: (context) => di.sl<ActiveSharingBloc>()..add(GetNearUsers()),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 42.w),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              40.height(),
+              Center(
+                child: Image.asset(
+                  'images/location_big.png',
+                  width: 120.w,
+                  height: 193.h,
+                ),
               ),
-            ),
-            34.height(),
-            const ActiveSharingUserCard(),
-            const ActiveSharingUserCard(),
-            const ActiveSharingUserCard(),
-            const ActiveSharingUserCard(),
-          ],
+              34.height(),
+              BlocBuilder<ActiveSharingBloc, ActiveSharingState>(
+                builder: (context, state) {
+                  if (state is LoadingActiveSharingState) {
+                    return const LoadingWidget();
+                  } else if (state is SuccessActiveSharingState) {
+                    return ListView.builder(
+                      itemCount: state.users.length,
+                      itemBuilder: (context, index) {
+                        return const ActiveSharingUserCard();
+                      },
+                    );
+                  } else if (state is ErrorActiveSharingState) {
+                    return Center(
+                      child: Text(state.message),
+                    );
+                  }
+                  return const Text('hi');
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

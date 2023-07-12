@@ -1,5 +1,12 @@
 import 'package:betweener_app/core/network/network_info.dart';
 import 'package:betweener_app/core/shared_pref/shared_pref.dart';
+import 'package:betweener_app/feature/active_sharing/data/datasources/sharing_active_remote_datasource.dart';
+import 'package:betweener_app/feature/active_sharing/data/repositorises/repository_active_sharing_imp.dart';
+import 'package:betweener_app/feature/active_sharing/domain/repositorises/repository.dart';
+import 'package:betweener_app/feature/active_sharing/domain/usecases/delete_active_sharing.dart';
+import 'package:betweener_app/feature/active_sharing/domain/usecases/get_near_users.dart';
+import 'package:betweener_app/feature/active_sharing/domain/usecases/set_active_sharing.dart';
+import 'package:betweener_app/feature/active_sharing/presentation/bloc/share/active_sharing_bloc.dart';
 import 'package:betweener_app/feature/auth/data/datasources/auth_local_data_source.dart';
 import 'package:betweener_app/feature/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:betweener_app/feature/auth/data/repositorises/auth_repository_impl.dart';
@@ -74,7 +81,7 @@ Future<void> init() async {
   sl.registerLazySingleton<ShareRemoteDataSource>(() => ShareRemoteDataSourceImpl(client: sl()));
   sl.registerLazySingleton<ShareLocalDataSource>(() => ShareLocalDataSourceImpl(preferences: sl()));
 
-  /// Link usecase
+  /// Link Feature
   ///bloc
   sl.registerFactory(() => LinkBloc(getMyLinksUseCase: sl()));
   sl.registerFactory(() => LinkUpdateBloc(editLinkUseCase: sl(), removeLinkUseCase: sl(), addLinkUseCase: sl()));
@@ -91,4 +98,18 @@ Future<void> init() async {
   ///datasource
   sl.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImp(sharedPreferences: SharedPrefController()));
   sl.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImp());
+
+  ///Active sharing Feature
+  sl.registerFactory(() => ActiveSharingBloc(getNearUsersUseCase: sl()));
+
+  ///usecase
+  sl.registerLazySingleton(() => DeleteActiveSharingUseCase(repositoryActiveSharing: sl()));
+  sl.registerLazySingleton(() => SetActiveSharingUseCase(repositoryActiveSharing: sl()));
+  sl.registerLazySingleton(() => GetNearUsersUseCase(repositoryActiveSharing: sl()));
+
+  /// repository
+  sl.registerFactory<RepositoryActiveSharing>(() => RepositoryActiveSharingImp(remoteDataSource: sl(), networkInfo: sl()));
+
+  ///datasource
+  sl.registerLazySingleton<ActiveSharingRemoteDataSource>(() => ActiveSharingRemoteDataSourceImp());
 }
