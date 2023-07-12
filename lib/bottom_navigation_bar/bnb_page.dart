@@ -19,7 +19,7 @@ class BnbPage extends StatelessWidget {
     final List<Widget> body = [
       const ActiveSharing(),
       HomePage(user: user),
-      const ProfileScreen(),
+      ProfileScreen(user: user),
     ];
     final List<AppBar> appBars = [
       ActiveSharing.appBar(),

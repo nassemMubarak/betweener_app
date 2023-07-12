@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:betweener_app/bottom_navigation_bar/bnb_page.dart';
 import 'package:betweener_app/core/widgets/text_widget.dart';
 import 'package:betweener_app/feature/auth/data/models/user_model.dart';
 import 'package:betweener_app/feature/links/presentation/screens/profile_screen.dart';
@@ -52,8 +53,7 @@ class _ScanPageState extends State<ScanPage> {
       Navigator.pop(context);
       print(userModel);
 
-      print('----------+++++++++++++++++++++++++++++++++-------------');
-      // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: HomePage()), (route) => false);
+      // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: ), (route) => false);
     }
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 21.w, vertical: 30.h),

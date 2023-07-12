@@ -4,18 +4,21 @@ import 'package:betweener_app/feature/links/presentation/widgets/user_card.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../auth/domain/entities/user.dart';
 import '../widgets/list_links.dart';
 
 class ProfileScreen extends StatelessWidget {
   final bool isUser;
+  final User user;
 
-  const ProfileScreen({this.isUser = false, Key? key}) : super(key: key);
+
+  const ProfileScreen({this.isUser = false, Key? key,required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        UserCard(isUser: isUser),
+        UserCard(isUser: isUser,user: user),
         BlocBuilder<LinkBloc, LinkState>(
           builder: (context, state) {
             if (state is LinkLoadingState) {
