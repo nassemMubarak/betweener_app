@@ -21,7 +21,7 @@ class LinkModel extends Link {
       updatedAt: map['updated_at'],
       title: map['title'],
       isActive: map['isActive'],
-      username: map['username'],
+      username: map['username'] ?? '',
     );
   }
 

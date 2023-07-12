@@ -37,7 +37,7 @@ class BnbPage extends StatelessWidget {
                   ? FloatingActionButton(
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AddLink(),
+                          builder: (context) => AddLink(username: user.name),
                         ));
                       },
                       backgroundColor: Theme.of(context).primaryColor,

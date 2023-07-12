@@ -16,9 +16,16 @@ abstract class RemoteDataSource {
 
 class RemoteDataSourceImp implements RemoteDataSource {
   @override
-  Future<void> addLink({required LinkModel linkModel}) {
-    // TODO: implement addLink
-    throw UnimplementedError();
+  Future<void> addLink({required LinkModel linkModel}) async {
+    await ApiController().post(
+      Uri.parse('${ApiSettings().BASE_URL}${ApiSettings().LINKS}'),
+      headers: {'Authorization': 'Bearer ${await getToken()}'},
+      body: {
+        'title': linkModel.title,
+        'link': linkModel.link,
+        'username': linkModel.username,
+      },
+    );
   }
 
   @override
@@ -40,6 +47,7 @@ class RemoteDataSourceImp implements RemoteDataSource {
     Map links = await ApiController().get(
       Uri.parse(ApiSettings().BASE_URL + ApiSettings().LINKS),
       headers: {'Authorization': 'Bearer ${await getToken()}'},
+      numberOfSecondsToSave: 9999999999999999,
     );
     return (links['links'] as List).map((e) => LinkModel.fromMap(e)).toList();
   }

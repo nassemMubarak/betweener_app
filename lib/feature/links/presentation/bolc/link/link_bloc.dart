@@ -28,16 +28,7 @@ class LinkBloc extends Bloc<LinkEvent, LinkState> {
               LinkSuccessState(
                 links: links
                     .map<LinkModel>(
-                      (link) => LinkModel(
-                        username: link.username,
-                        link: link.link,
-                        id: link.id,
-                        isActive: link.isActive,
-                        title: link.title,
-                        createdAt: link.createdAt,
-                        userId: link.userId,
-                        updatedAt: link.updatedAt,
-                      ),
+                      (link) => linkToLinkModel(link: link),
                     )
                     .toList(),
               ),
@@ -52,15 +43,17 @@ class LinkBloc extends Bloc<LinkEvent, LinkState> {
             emit(LinkErrorState(message: _mapFailureMessage(failure: failure)));
           },
           (links) {
+            List<LinkModel> listOfLinks = links.map<LinkModel>((link) {
+              if (link.id == event.link.id && event.isUpdate) {
+                return linkToLinkModel(link: event.link);
+              }
+              return linkToLinkModel(link: link);
+            }).toList();
+            if (!event.isUpdate) {
+              listOfLinks.add(linkToLinkModel(link: event.link));
+            }
             emit(
-              LinkSuccessState(
-                links: links.map<LinkModel>((link) {
-                  if (link.id == event.link.id) {
-                    return linkToLinkModel(link: event.link);
-                  }
-                  return linkToLinkModel(link: link);
-                }).toList(),
-              ),
+              LinkSuccessState(links: listOfLinks),
             );
           },
         );

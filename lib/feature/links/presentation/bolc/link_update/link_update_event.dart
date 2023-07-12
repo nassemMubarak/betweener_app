@@ -17,7 +17,8 @@ class EditLinkUpdateEvent extends LinkUpdateEvent {
 }
 
 class AddLinkUpdateEvent extends LinkUpdateEvent {
+  final BuildContext context;
   final Link link;
 
-  AddLinkUpdateEvent({required this.link});
+  AddLinkUpdateEvent({required this.context, required this.link});
 }

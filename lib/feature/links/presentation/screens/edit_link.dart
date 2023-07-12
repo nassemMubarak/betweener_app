@@ -80,21 +80,33 @@ class EditLink extends StatelessWidget {
                   },
                 ),
                 41.height(),
-                SizedBox(
-                  width: 138.w,
-                  height: 50.h,
-                  child: ElevatedButtonWidget(
-                    text: 'SAVE',
-                    textColor: const Color(0xff784E00),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        BlocProvider.of<LinkUpdateBloc>(context).add(EditLinkUpdateEvent(
-                          context: context,
-                          link: link,
-                        ));
-                      }
-                    },
-                  ),
+                BlocBuilder<LinkUpdateBloc, LinkUpdateState>(
+                  builder: (context, state) {
+                    if (state is LinkUpdateSuccessState) {
+                      Future.delayed(
+                        const Duration(microseconds: 100),
+                        () => Navigator.pop(context),
+                      );
+                    } else if (state is LinkUpdateLoadingState) {
+                      return const CircularProgressIndicator();
+                    }
+                    return SizedBox(
+                      width: 138.w,
+                      height: 50.h,
+                      child: ElevatedButtonWidget(
+                        text: 'SAVE',
+                        textColor: const Color(0xff784E00),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            BlocProvider.of<LinkUpdateBloc>(context).add(EditLinkUpdateEvent(
+                              context: context,
+                              link: link,
+                            ));
+                          }
+                        },
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

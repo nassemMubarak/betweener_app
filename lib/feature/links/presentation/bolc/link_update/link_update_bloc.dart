@@ -31,6 +31,10 @@ class LinkUpdateBloc extends Bloc<LinkUpdateEvent, LinkUpdateState> {
       } else if (event is RemoveLinkUpdateEvent) {
         emit(LinkUpdateLoadingState());
         emit(await _editAddRemove(() => removeLinkUseCase(linkId: event.linkId)));
+      } else if (event is AddLinkUpdateEvent) {
+        BlocProvider.of<LinkBloc>(event.context).add(UpdateMyLinksEvent(link: event.link, isUpdate: false));
+        emit(LinkUpdateLoadingState());
+        emit(await _editAddRemove(() => addLinkUseCase(link: event.link)));
       }
     });
   }
