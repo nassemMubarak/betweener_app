@@ -1,7 +1,7 @@
 class Link {
   final int id;
-  final String title;
-  final String link;
+  String title;
+  String link;
   final String username;
   final int isActive;
   final int userId;

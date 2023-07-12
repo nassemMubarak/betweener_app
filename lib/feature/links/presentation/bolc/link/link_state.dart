@@ -26,11 +26,10 @@ class LinkErrorState extends LinkState {
 
 class LinkSuccessState extends LinkState {
   final List<LinkModel>? links;
-  final String? message;
 
-  const LinkSuccessState({this.links, this.message});
+  const LinkSuccessState({required this.links});
 
   @override
   // TODO: implement props
-  List<Object?> get props => [links, message];
+  List<Object?> get props => [links];
 }

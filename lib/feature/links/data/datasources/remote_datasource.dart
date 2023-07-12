@@ -1,11 +1,13 @@
 import 'package:betweener_app/core/api/api_controller.dart';
 import 'package:betweener_app/core/api/api_sittings.dart';
+import 'package:betweener_app/feature/auth/data/datasources/auth_local_data_source.dart';
 import 'package:betweener_app/feature/links/data/models/link_model.dart';
+import 'package:betweener_app/injection_container.dart' as di;
 
 abstract class RemoteDataSource {
   Future<void> addLink({required LinkModel linkModel});
 
-  Future<List<LinkModel>> getMyLinks(String token);
+  Future<List<LinkModel>> getMyLinks();
 
   Future<void> removeLink({required String linkId});
 
@@ -20,16 +22,24 @@ class RemoteDataSourceImp implements RemoteDataSource {
   }
 
   @override
-  Future<void> editLink({required LinkModel linkModel}) {
-    // TODO: implement editLink
-    throw UnimplementedError();
+  Future<void> editLink({required LinkModel linkModel}) async {
+    await ApiController().put(
+      Uri.parse('${ApiSettings().BASE_URL}${ApiSettings().LINKS}/${linkModel.id.toString()}'),
+      headers: {'Authorization': 'Bearer ${await getToken()}'},
+      body: {
+        'title': linkModel.title,
+        'link': linkModel.link,
+        'username': linkModel.username,
+        // 'isActive': linkModel.isActive,
+      },
+    );
   }
 
   @override
-  Future<List<LinkModel>> getMyLinks(String token) async {
+  Future<List<LinkModel>> getMyLinks() async {
     Map links = await ApiController().get(
       Uri.parse(ApiSettings().BASE_URL + ApiSettings().LINKS),
-      headers: {'Authorization': 'Bearer $token'},
+      headers: {'Authorization': 'Bearer ${await getToken()}'},
     );
     return (links['links'] as List).map((e) => LinkModel.fromMap(e)).toList();
   }
@@ -38,5 +48,9 @@ class RemoteDataSourceImp implements RemoteDataSource {
   Future<void> removeLink({required String linkId}) {
     // TODO: implement removeLink
     throw UnimplementedError();
+  }
+
+  Future<String> getToken() async {
+    return (await di.sl<AuthLocalDataSource>().getCurrentUser()).token;
   }
 }

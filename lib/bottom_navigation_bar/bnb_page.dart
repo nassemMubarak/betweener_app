@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BnbPage extends StatelessWidget {
   final User user;
+
   const BnbPage({required this.user, Key? key}) : super(key: key);
 
   @override

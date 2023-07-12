@@ -57,6 +57,7 @@ class TextFormFieldAndLabelWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 2),
             ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 2)),
 
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,

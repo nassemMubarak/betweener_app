@@ -71,6 +71,26 @@ class ApiController {
     }
   }
 
+  Future<Map> put(
+    Uri url, {
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) async {
+    http.Response response = await http.put(
+      url,
+      headers: headers ?? {"Content-Type": "application/json"},
+      body: body,
+      encoding: encoding,
+    );
+    Map<String, dynamic> data = await jsonDecode(response.body);
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return data;
+    } else {
+      return data;
+    }
+  }
+
   Future<Map> delete(
     Uri url, {
     Map<String, String>? headers,

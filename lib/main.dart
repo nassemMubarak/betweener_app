@@ -1,6 +1,8 @@
 import 'package:betweener_app/bottom_navigation_bar/bnb_page.dart';
 import 'package:betweener_app/feature/auth/prssentation/bloc/auth/auth_bloc.dart';
 import 'package:betweener_app/feature/auth/prssentation/pages/onboarding_page.dart';
+import 'package:betweener_app/feature/links/presentation/bolc/link/link_bloc.dart';
+import 'package:betweener_app/feature/links/presentation/bolc/link_update/link_update_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,6 +24,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => di.sl<AuthBloc>()..add(GetCurrentUserEvent())),
+          BlocProvider<LinkUpdateBloc>(create: (context) => di.sl<LinkUpdateBloc>()),
+          BlocProvider<LinkBloc>(create: (context) => di.sl<LinkBloc>()..add(const GetMyLinksEvent())),
         ],
         child: ScreenUtilInit(
           designSize: const Size(360, 800),

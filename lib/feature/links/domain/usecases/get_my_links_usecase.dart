@@ -9,7 +9,7 @@ class GetMyLinksUseCase {
 
   GetMyLinksUseCase({required this.repository});
 
-  Future<Either<Failure, List<Link>>> call(String token) async {
-    return await repository.getMyLinks(token);
+  Future<Either<Failure, List<Link>>> call() async {
+    return await repository.getMyLinks();
   }
 }

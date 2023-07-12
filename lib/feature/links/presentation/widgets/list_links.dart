@@ -37,7 +37,9 @@ class ListOfLinks extends StatelessWidget {
                               child: SlidableAction(
                                 onPressed: (context) {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => EditLink(),
+                                    builder: (context) => EditLink(
+                                      link: links[index],
+                                    ),
                                   ));
                                 },
                                 backgroundColor: const Color(0xFFFFD465),
@@ -52,7 +54,7 @@ class ListOfLinks extends StatelessWidget {
                               height: 58,
                               child: SlidableAction(
                                 onPressed: (context) {},
-                                backgroundColor: Color(0xFFFE4A49),
+                                backgroundColor: const Color(0xFFFE4A49),
                                 foregroundColor: Colors.white,
                                 icon: Icons.delete,
                                 borderRadius: BorderRadius.circular(12.r),
