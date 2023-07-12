@@ -34,11 +34,16 @@ class ActiveSharing extends StatelessWidget {
                   if (state is LoadingActiveSharingState) {
                     return const LoadingWidget();
                   } else if (state is SuccessActiveSharingState) {
-                    return ListView.builder(
-                      itemCount: state.users.length,
-                      itemBuilder: (context, index) {
-                        return const ActiveSharingUserCard();
-                      },
+                    return SizedBox(
+                      height: 300.h,
+                      child: ListView.builder(
+                        itemCount: state.users.length,
+                        itemBuilder: (context, index) {
+                          return ActiveSharingUserCard(
+                            user: state.users[index],
+                          );
+                        },
+                      ),
                     );
                   } else if (state is ErrorActiveSharingState) {
                     return Center(

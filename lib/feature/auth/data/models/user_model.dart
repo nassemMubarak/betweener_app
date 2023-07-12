@@ -24,7 +24,7 @@ class UserModel extends User {
       id: json['id'],
       updated_at: json['updated_at'],
       created_at: json['created_at'],
-      token: json['token'],
+      token: json['token'] ?? '',
       email_verified_at: json['email_verified_at'],
       isActive: json['isActive'],
       country: json['country'],
