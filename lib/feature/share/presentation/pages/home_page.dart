@@ -1,10 +1,14 @@
 import 'dart:convert';
 
+import 'package:betweener_app/core/widgets/loading_widget.dart';
 import 'package:betweener_app/core/widgets/text_widget.dart';
 import 'package:betweener_app/feature/auth/data/models/user_model.dart';
+import 'package:betweener_app/feature/links/presentation/bolc/link/link_bloc.dart';
+import 'package:betweener_app/feature/links/presentation/screens/add_link.dart';
 import 'package:betweener_app/feature/share/presentation/pages/scan_page.dart';
 import 'package:betweener_app/feature/share/presentation/widgets/home_page/container_in_home_page_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -58,7 +62,41 @@ class HomePage extends StatelessWidget {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 physics: BouncingScrollPhysics(),
-                child: Row(
+                child: BlocBuilder<LinkBloc,LinkState>(
+                  builder: (context, state) {
+                    if(state is LinkSuccessState){
+                      print(state.links!.length);
+                     return Container(
+                       height: 85.h,
+                       width: 1.sw,
+                       child: ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          itemCount: state.links!.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index){
+                            if(index==state.links!.length-1){
+                             return ContainerInHomePageWidget(subTitle: 'Add More', margin: 10.w,onTap: (){
+                               Navigator.push(context, MaterialPageRoute(builder: (_)=>AddLink(username: userModel.name)));
+                             },);
+                            }else{
+                            return  ContainerInHomePageWidget(
+                                  title: state.links![index].title, subTitle: state.links![index].link,margin: 10,);
+                            }
+                          },),
+                     );
+                    }
+                    return Container();
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+/*
+Row(
                   children: [
                     const ContainerInHomePageWidget(
                         title: 'FACEBOOK', subTitle: '@oalshokri'),
@@ -69,15 +107,8 @@ class HomePage extends StatelessWidget {
                     ContainerInHomePageWidget(
                         subTitle: 'Add More', margin: 24.w),
                   ],
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
+                )
+ */
   static AppBar appBar() {
     return AppBar(
       backgroundColor: Colors.transparent,

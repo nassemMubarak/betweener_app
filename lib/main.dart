@@ -7,6 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import './injection_container.dart' as di;
 import 'core/theme/app_theme_data.dart';
+import 'feature/auth/prssentation/pages/handel_finger_page.dart';
+import 'feature/links/presentation/bolc/link/link_bloc.dart';
+import 'feature/links/presentation/bolc/link_update/link_update_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
