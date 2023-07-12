@@ -53,9 +53,11 @@ class RemoteDataSourceImp implements RemoteDataSource {
   }
 
   @override
-  Future<void> removeLink({required String linkId}) {
-    // TODO: implement removeLink
-    throw UnimplementedError();
+  Future<void> removeLink({required String linkId}) async {
+    await ApiController().delete(
+      Uri.parse('${ApiSettings().BASE_URL}${ApiSettings().LINKS}/$linkId'),
+      headers: {'Authorization': 'Bearer ${await getToken()}'},
+    );
   }
 
   Future<String> getToken() async {

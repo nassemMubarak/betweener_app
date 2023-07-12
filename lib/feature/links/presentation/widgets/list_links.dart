@@ -1,7 +1,9 @@
 import 'package:betweener_app/core/extensions/num_extension.dart';
 import 'package:betweener_app/feature/links/data/models/link_model.dart';
+import 'package:betweener_app/feature/links/presentation/bolc/link_update/link_update_bloc.dart';
 import 'package:betweener_app/feature/links/presentation/screens/edit_link.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -39,6 +41,7 @@ class ListOfLinks extends StatelessWidget {
                                   Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => EditLink(
                                       link: links[index],
+                                      index: index,
                                     ),
                                   ));
                                 },
@@ -49,16 +52,27 @@ class ListOfLinks extends StatelessWidget {
                               ),
                             ),
                             12.width(),
-                            SizedBox(
-                              width: 58,
-                              height: 58,
-                              child: SlidableAction(
-                                onPressed: (context) {},
-                                backgroundColor: const Color(0xFFFE4A49),
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete,
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
+                            BlocBuilder<LinkUpdateBloc, LinkUpdateState>(
+                              builder: (context, state) {
+                                if (state is LinkUpdateLoadingState) {
+                                  return const CircularProgressIndicator();
+                                }
+                                return SizedBox(
+                                  width: 58,
+                                  height: 58,
+                                  child: SlidableAction(
+                                    onPressed: (context) {
+                                      BlocProvider.of<LinkUpdateBloc>(context).add(
+                                        RemoveLinkUpdateEvent(linkId: links[index].id!.toString(), indexInList: index, context: context),
+                                      );
+                                    },
+                                    backgroundColor: const Color(0xFFFE4A49),
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.delete,
+                                    borderRadius: BorderRadius.circular(12.r),
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),

@@ -25,16 +25,19 @@ class LinkUpdateBloc extends Bloc<LinkUpdateEvent, LinkUpdateState> {
   }) : super(LinkUpdateInitial()) {
     on<LinkUpdateEvent>((event, emit) async {
       if (event is EditLinkUpdateEvent) {
-        BlocProvider.of<LinkBloc>(event.context).add(UpdateMyLinksEvent(link: event.link));
+        BlocProvider.of<LinkBloc>(event.context).add(UpdateMyLinksEvent(link: event.link, index: event.index));
         emit(LinkUpdateLoadingState());
         emit(await _editAddRemove(() async => await editLinkUseCase(link: event.link)));
       } else if (event is RemoveLinkUpdateEvent) {
+        BlocProvider.of<LinkBloc>(event.context).add(UpdateMyLinksEvent(index: event.indexInList));
         emit(LinkUpdateLoadingState());
         emit(await _editAddRemove(() => removeLinkUseCase(linkId: event.linkId)));
       } else if (event is AddLinkUpdateEvent) {
         BlocProvider.of<LinkBloc>(event.context).add(UpdateMyLinksEvent(link: event.link, isUpdate: false));
         emit(LinkUpdateLoadingState());
         emit(await _editAddRemove(() => addLinkUseCase(link: event.link)));
+      } else if (event is BackToInitStateLinkUpdateEvent) {
+        emit(LinkUpdateInitial());
       }
     });
   }

@@ -25,6 +25,19 @@ class LinkModel extends Link {
     );
   }
 
+  factory LinkModel.fromLink({required Link link}) {
+    return LinkModel(
+      username: link.username,
+      link: link.link,
+      id: link.id,
+      isActive: link.isActive,
+      title: link.title,
+      createdAt: link.createdAt,
+      userId: link.userId,
+      updatedAt: link.updatedAt,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = super.id;

@@ -13,6 +13,8 @@ class GetMyLinksEvent extends LinkEvent {
 
 class UpdateMyLinksEvent extends LinkEvent {
   bool isUpdate;
-  final Link link;
-  UpdateMyLinksEvent({required this.link, this.isUpdate = true});
+  Link? link;
+  int? index;
+
+  UpdateMyLinksEvent({this.link, this.isUpdate = true, this.index});
 }

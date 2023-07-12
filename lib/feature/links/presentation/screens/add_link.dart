@@ -74,6 +74,7 @@ class AddLink extends StatelessWidget {
                 BlocBuilder<LinkUpdateBloc, LinkUpdateState>(
                   builder: (context, state) {
                     if (state is LinkUpdateSuccessState) {
+                      BlocProvider.of<LinkUpdateBloc>(context).add(BackToInitStateLinkUpdateEvent());
                       Future.delayed(
                         const Duration(microseconds: 100),
                         () => Navigator.pop(context),

@@ -1,3 +1,4 @@
+import 'package:betweener_app/core/api/api_controller.dart';
 import 'package:betweener_app/core/error/failure.dart';
 import 'package:betweener_app/core/string/failure.dart';
 import 'package:betweener_app/feature/links/data/models/link_model.dart';
@@ -28,7 +29,7 @@ class LinkBloc extends Bloc<LinkEvent, LinkState> {
               LinkSuccessState(
                 links: links
                     .map<LinkModel>(
-                      (link) => linkToLinkModel(link: link),
+                      (link) => LinkModel.fromLink(link: link),
                     )
                     .toList(),
               ),
@@ -44,13 +45,18 @@ class LinkBloc extends Bloc<LinkEvent, LinkState> {
           },
           (links) {
             List<LinkModel> listOfLinks = links.map<LinkModel>((link) {
-              if (link.id == event.link.id && event.isUpdate) {
-                return linkToLinkModel(link: event.link);
+              if (event.link != null && link.id == event.link!.id && event.isUpdate) {
+                ApiController().updateLinkFromCache(event.index!, event.link!);
+                return LinkModel.fromLink(link: event.link!);
               }
-              return linkToLinkModel(link: link);
+              return LinkModel.fromLink(link: link);
             }).toList();
-            if (!event.isUpdate) {
-              listOfLinks.add(linkToLinkModel(link: event.link));
+            if (!event.isUpdate && event.link != null) {
+              listOfLinks.add(LinkModel.fromLink(link: event.link!));
+              ApiController().addLinkFromCache(event.link!);
+            } else if (event.link == null) {
+              listOfLinks.removeAt(event.index!);
+              ApiController().removeLinkFromCache(event.index!);
             }
             emit(
               LinkSuccessState(links: listOfLinks),
@@ -74,18 +80,5 @@ class LinkBloc extends Bloc<LinkEvent, LinkState> {
       default:
         return 'Unexpected Error, Please try again later.';
     }
-  }
-
-  LinkModel linkToLinkModel({required Link link}) {
-    return LinkModel(
-      username: link.username,
-      link: link.link,
-      id: link.id,
-      isActive: link.isActive,
-      title: link.title,
-      createdAt: link.createdAt,
-      userId: link.userId,
-      updatedAt: link.updatedAt,
-    );
   }
 }

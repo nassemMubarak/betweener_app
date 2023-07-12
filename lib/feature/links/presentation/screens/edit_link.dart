@@ -9,14 +9,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EditLink extends StatelessWidget {
   Link link;
+  int index;
   late final TextEditingController titleController;
   late final TextEditingController linkController;
   final _formKey = GlobalKey<FormState>();
 
   EditLink({
     required this.link,
+    required this.index,
     Key? key,
   }) : super(key: key) {
+    print('rrrrrrrrr');
     titleController = TextEditingController()..text = link.title;
     linkController = TextEditingController()..text = link.link;
   }
@@ -83,6 +86,7 @@ class EditLink extends StatelessWidget {
                 BlocBuilder<LinkUpdateBloc, LinkUpdateState>(
                   builder: (context, state) {
                     if (state is LinkUpdateSuccessState) {
+                      BlocProvider.of<LinkUpdateBloc>(context).add(BackToInitStateLinkUpdateEvent());
                       Future.delayed(
                         const Duration(microseconds: 100),
                         () => Navigator.pop(context),
@@ -98,10 +102,7 @@ class EditLink extends StatelessWidget {
                         textColor: const Color(0xff784E00),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            BlocProvider.of<LinkUpdateBloc>(context).add(EditLinkUpdateEvent(
-                              context: context,
-                              link: link,
-                            ));
+                            BlocProvider.of<LinkUpdateBloc>(context).add(EditLinkUpdateEvent(context: context, link: link, index: index));
                           }
                         },
                       ),
