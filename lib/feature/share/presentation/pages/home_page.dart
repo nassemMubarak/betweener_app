@@ -12,10 +12,18 @@ import '../../../auth/domain/entities/user.dart';
 
 class HomePage extends StatelessWidget {
   final User user;
-  const HomePage({Key? key,required this.user}) : super(key: key);
+
+  const HomePage({Key? key, required this.user}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-  UserModel userModel = UserModel(name: user.name, email: user.email, token: user.token, id: user.id, updated_at: user.updated_at, created_at: user.created_at);
+    UserModel userModel = UserModel(
+        name: user.name,
+        email: user.email,
+        token: user.token,
+        id: user.id,
+        updated_at: user.updated_at,
+        created_at: user.created_at);
     return Padding(
       padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 30.h),
       child: SingleChildScrollView(
@@ -24,13 +32,19 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextWidget(text: 'hello, ${user.name}',color: Color(0xFF2D2B4E),fontWeight: FontWeight.w600,fontSize: 20.sp,),
+            TextWidget(
+              text: 'hello, ${user.name}',
+              color: Color(0xFF2D2B4E),
+              fontWeight: FontWeight.w600,
+              fontSize: 20.sp,
+            ),
             SizedBox(height: 16.h),
-            Center(child:
-            QrImageView(data: json.encode(userModel.toJson())
+            Container(
+              padding: EdgeInsets.all(30),
+              alignment: Alignment.center,
+              child: QrImageView(data: json.encode(userModel.toJson())),
             ),
-            ),
-            SizedBox(height: 40.h),
+            SizedBox(height: 10.h),
             Divider(
               height: 2,
               thickness: 2,
@@ -46,9 +60,14 @@ class HomePage extends StatelessWidget {
                 physics: BouncingScrollPhysics(),
                 child: Row(
                   children: [
-                    const ContainerInHomePageWidget(title: 'FACEBOOK', subTitle: '@oalshokri'),
-                    ContainerInHomePageWidget(title: 'INSTAGRAM', subTitle: '@oalshokri', margin: 24.w),
-                    ContainerInHomePageWidget(subTitle: 'Add More', margin: 24.w),
+                    const ContainerInHomePageWidget(
+                        title: 'FACEBOOK', subTitle: '@oalshokri'),
+                    ContainerInHomePageWidget(
+                        title: 'INSTAGRAM',
+                        subTitle: '@oalshokri',
+                        margin: 24.w),
+                    ContainerInHomePageWidget(
+                        subTitle: 'Add More', margin: 24.w),
                   ],
                 ),
               ),
@@ -69,7 +88,8 @@ class HomePage extends StatelessWidget {
         Builder(builder: (context) {
           return IconButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => ScanPage()));
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => ScanPage()));
               },
               icon: Icon(Icons.qr_code_scanner_rounded));
         }),
