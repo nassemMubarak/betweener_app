@@ -7,8 +7,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ActiveSharing extends StatelessWidget {
+class ActiveSharing extends StatefulWidget {
   const ActiveSharing({Key? key}) : super(key: key);
+
+  @override
+  State<ActiveSharing> createState() => _ActiveSharingState();
+
+  static AppBar appBar() {
+    return AppBar(
+      title: Text(
+        'Active Sharing',
+        style: TextStyle(
+          color: const Color(0xff2D2B4E),
+          fontSize: 24.sp,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+    );
+  }
+}
+
+class _ActiveSharingState extends State<ActiveSharing> {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    // BlocProvider.of<ActiveSharingBloc>(context).add(DeleteActive());
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,22 +85,6 @@ class ActiveSharing extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  static AppBar appBar() {
-    return AppBar(
-      title: Text(
-        'Active Sharing',
-        style: TextStyle(
-          color: const Color(0xff2D2B4E),
-          fontSize: 24.sp,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      centerTitle: true,
     );
   }
 }
