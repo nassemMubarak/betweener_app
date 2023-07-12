@@ -100,7 +100,7 @@ Future<void> init() async {
   sl.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImp());
 
   ///Active sharing Feature
-  sl.registerFactory(() => ActiveSharingBloc(getNearUsersUseCase: sl()));
+  sl.registerFactory(() => ActiveSharingBloc(getNearUsersUseCase: sl(), setActiveSharingUseCase: sl(), deleteActiveSharingUseCase: sl()));
 
   ///usecase
   sl.registerLazySingleton(() => DeleteActiveSharingUseCase(repositoryActiveSharing: sl()));

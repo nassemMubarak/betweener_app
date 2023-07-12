@@ -17,7 +17,7 @@ class ActiveSharingRemoteDataSourceImp implements ActiveSharingRemoteDataSource 
       Uri.parse('${ApiSettings().BASE_URL}${ApiSettings().ACTIVE_SHARE}/${await getUserId()}'),
       headers: {'Authorization': 'Bearer ${await getToken()}'},
       body: {
-        'type': 'sender',
+        'type': 'receiver',
       },
     );
   }
