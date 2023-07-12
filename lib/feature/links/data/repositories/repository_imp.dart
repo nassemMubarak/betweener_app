@@ -21,10 +21,10 @@ class RepositoryImp implements Repository {
   });
 
   @override
-  Future<Either<Failure, List<Link>>> getMyLinks() async {
+  Future<Either<Failure, List<Link>>> getMyLinks(String token) async {
     if (await networkInfo.isConnected) {
       try {
-        List<LinkModel> links = await remoteDataSource.getMyLinks();
+        List<LinkModel> links = await remoteDataSource.getMyLinks(token);
         localDataSource.cacheMyLinks(links);
         return Right(links);
       } on ServerException {
@@ -43,7 +43,7 @@ class RepositoryImp implements Repository {
   @override
   Future<Either<Failure, Unit>> addLink({required Link link}) async {
     return await _addEditRemoveRepo(() async {
-      final LinkModel linkModel = LinkModel(name: link.name, url: link.url, id: link.id);
+      final LinkModel linkModel = linkEntityToModel(link);
       await remoteDataSource.addLink(linkModel: linkModel);
     });
   }
@@ -51,7 +51,7 @@ class RepositoryImp implements Repository {
   @override
   Future<Either<Failure, Unit>> editLink({required Link link}) async {
     return await _addEditRemoveRepo(() async {
-      final LinkModel linkModel = LinkModel(name: link.name, url: link.url, id: link.id);
+      final LinkModel linkModel = linkEntityToModel(link);
       await remoteDataSource.editLink(linkModel: linkModel);
     });
   }
@@ -73,5 +73,18 @@ class RepositoryImp implements Repository {
       }
     }
     return Left(OfflineFailure());
+  }
+
+  LinkModel linkEntityToModel(Link link) {
+    return LinkModel(
+      username: link.username,
+      link: link.link,
+      id: link.id,
+      isActive: link.isActive,
+      title: link.title,
+      createdAt: link.createdAt,
+      userId: link.userId,
+      updatedAt: link.updatedAt,
+    );
   }
 }

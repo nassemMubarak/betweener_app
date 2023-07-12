@@ -70,7 +70,7 @@ class EditProfile extends StatelessWidget {
               ),
               20.height(),
               TextFormFieldAndLabelWidget(
-                controller: phoneController..text = '+97000000000',
+                controller: phoneController..text = '+97059',
                 label: 'phone',
                 hintText: '',
                 textInputType: TextInputType.name,

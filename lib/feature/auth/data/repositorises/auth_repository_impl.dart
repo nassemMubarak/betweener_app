@@ -1,5 +1,3 @@
-
-
 import 'package:betweener_app/core/error/exception.dart';
 import 'package:betweener_app/core/error/failure.dart';
 import 'package:betweener_app/core/network/network_info.dart';
@@ -10,53 +8,52 @@ import 'package:dartz/dartz.dart';
 
 import '../datasources/auth_local_data_source.dart';
 import '../datasources/auth_remote_data_source.dart';
+
 typedef LoginOrRegister = Future<UserModel> Function();
-class AuthRepositoryImpl implements AuthRepository{
+
+class AuthRepositoryImpl implements AuthRepository {
   final AuthLocalDataSource localDataSource;
   final AuthRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
   AuthRepositoryImpl({
-   required this.localDataSource,
-   required this.remoteDataSource,
-   required this.networkInfo,
+    required this.localDataSource,
+    required this.remoteDataSource,
+    required this.networkInfo,
   });
 
   @override
-  Future<Either<Failure, User>> getCurrentUser() async{
-    try{
+  Future<Either<Failure, User>> getCurrentUser() async {
+    try {
       final userModel = await localDataSource.getCurrentUser();
       return Right(userModel);
-    }on EmptyCacheException{
+    } on EmptyCacheException {
       return Left(EmptyCacheFailure());
     }
   }
 
   @override
   Future<Either<Failure, User>> logInUser({required Map authData}) {
-    return _getMessageLoginOrRegisterUser(
-            () => remoteDataSource.loginUser(authData: authData));
-  }
-  @override
-  Future<Either<Failure, User>> registerUser({required Map authData}) {
-    return _getMessageLoginOrRegisterUser(
-            () => remoteDataSource.registerUser(authData: authData));
-  }
-  @override
-  Future<Either<Failure, User>> loginWithGoogleUser({required Map authData}) {
-    return _getMessageLoginOrRegisterUser(
-            () => remoteDataSource.registerUser(authData: authData));
+    return _getMessageLoginOrRegisterUser(() => remoteDataSource.loginUser(authData: authData));
   }
 
   @override
-  Future<Either<Failure, Unit>> logout() async{
+  Future<Either<Failure, User>> registerUser({required Map authData}) {
+    return _getMessageLoginOrRegisterUser(() => remoteDataSource.registerUser(authData: authData));
+  }
+
+  @override
+  Future<Either<Failure, User>> loginWithGoogleUser({required Map authData}) {
+    return _getMessageLoginOrRegisterUser(() => remoteDataSource.registerUser(authData: authData));
+  }
+
+  @override
+  Future<Either<Failure, Unit>> logout() async {
     await localDataSource.logout();
     return const Right(unit);
   }
 
-
-  Future<Either<Failure, User>> _getMessageLoginOrRegisterUser(
-      LoginOrRegister loginOrRegister) async {
+  Future<Either<Failure, User>> _getMessageLoginOrRegisterUser(LoginOrRegister loginOrRegister) async {
     if (await networkInfo.isConnected) {
       try {
         final user = await loginOrRegister();

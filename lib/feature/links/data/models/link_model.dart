@@ -1,21 +1,40 @@
 import 'package:betweener_app/feature/links/domain/entities/link.dart';
 
 class LinkModel extends Link {
-  LinkModel({required super.name, required super.url, required super.id});
+  LinkModel({
+    required super.id,
+    required super.title,
+    required super.link,
+    required super.username,
+    required super.isActive,
+    required super.userId,
+    required super.createdAt,
+    required super.updatedAt,
+  });
 
   factory LinkModel.fromMap(Map<String, dynamic> map) {
     return LinkModel(
-      name: map['name'],
-      url: map['link'],
       id: map['id'],
+      link: map['link'],
+      userId: map['user_id'],
+      createdAt: map['created_at'],
+      updatedAt: map['updated_at'],
+      title: map['title'],
+      isActive: map['isActive'],
+      username: map['username'],
     );
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'name': super.name,
-      'link': super.url,
-      'id': super.id,
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = super.id;
+    data['title'] = super.title;
+    data['link'] = super.link;
+    data['username'] = super.username;
+    data['isActive'] = super.isActive;
+    data['user_id'] = super.userId;
+    data['created_at'] = super.createdAt;
+    data['updated_at'] = super.updatedAt;
+    return data;
   }
 }

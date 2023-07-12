@@ -1,5 +1,4 @@
 import 'package:betweener_app/bottom_navigation_bar/bnb_page.dart';
-import 'package:betweener_app/core/shared_pref/shared_pref.dart';
 import 'package:betweener_app/feature/auth/prssentation/bloc/auth/auth_bloc.dart';
 import 'package:betweener_app/feature/auth/prssentation/pages/onboarding_page.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'core/theme/app_theme_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SharedPrefController().initSharedPref();
   await di.init();
   runApp(const MyApp());
 }

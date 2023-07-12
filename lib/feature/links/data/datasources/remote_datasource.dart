@@ -1,9 +1,14 @@
+import 'package:betweener_app/core/api/api_controller.dart';
+import 'package:betweener_app/core/api/api_sittings.dart';
 import 'package:betweener_app/feature/links/data/models/link_model.dart';
 
 abstract class RemoteDataSource {
   Future<void> addLink({required LinkModel linkModel});
-  Future<List<LinkModel>> getMyLinks();
+
+  Future<List<LinkModel>> getMyLinks(String token);
+
   Future<void> removeLink({required String linkId});
+
   Future<void> editLink({required LinkModel linkModel});
 }
 
@@ -21,9 +26,12 @@ class RemoteDataSourceImp implements RemoteDataSource {
   }
 
   @override
-  Future<List<LinkModel>> getMyLinks() {
-    // TODO: implement getMyLinks
-    throw UnimplementedError();
+  Future<List<LinkModel>> getMyLinks(String token) async {
+    Map links = await ApiController().get(
+      Uri.parse(ApiSettings().BASE_URL + ApiSettings().LINKS),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+    return (links['links'] as List).map((e) => LinkModel.fromMap(e)).toList();
   }
 
   @override

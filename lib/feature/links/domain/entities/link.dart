@@ -1,11 +1,21 @@
 class Link {
-  final String name;
-  final String url;
-  final String id;
+  final int id;
+  final String title;
+  final String link;
+  final String username;
+  final int isActive;
+  final int userId;
+  final String createdAt;
+  final String updatedAt;
 
   Link({
-    required this.name,
-    required this.url,
     required this.id,
+    required this.title,
+    required this.link,
+    required this.username,
+    required this.isActive,
+    required this.userId,
+    required this.createdAt,
+    required this.updatedAt,
   });
 }
