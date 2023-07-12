@@ -7,7 +7,9 @@ abstract class LinkEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class GetMyLinksEvent extends LinkEvent {}
+class GetMyLinksEvent extends LinkEvent {
+  const GetMyLinksEvent();
+}
 
 class RemoveLinkEvent extends LinkEvent {
   final String linkId;

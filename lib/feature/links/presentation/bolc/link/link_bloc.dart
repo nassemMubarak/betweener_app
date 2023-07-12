@@ -1,11 +1,13 @@
 import 'package:betweener_app/core/error/failure.dart';
 import 'package:betweener_app/core/string/failure.dart';
+import 'package:betweener_app/feature/auth/data/datasources/auth_local_data_source.dart';
 import 'package:betweener_app/feature/links/data/models/link_model.dart';
 import 'package:betweener_app/feature/links/domain/entities/link.dart';
 import 'package:betweener_app/feature/links/domain/usecases/add_link_usecase.dart';
 import 'package:betweener_app/feature/links/domain/usecases/delete_link_usecase.dart';
 import 'package:betweener_app/feature/links/domain/usecases/edit_link_usecase.dart';
 import 'package:betweener_app/feature/links/domain/usecases/get_my_links_usecase.dart';
+import 'package:betweener_app/injection_container.dart' as di;
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -30,7 +32,7 @@ class LinkBloc extends Bloc<LinkEvent, LinkState> {
     on<LinkEvent>((event, emit) async {
       if (event is GetMyLinksEvent) {
         emit(LinkLoadingState());
-        final failureOrLinks = await getMyLinksUseCase();
+        final failureOrLinks = await getMyLinksUseCase((await di.sl<AuthLocalDataSource>().getCurrentUser()).token);
         failureOrLinks.fold(
           (failure) {
             emit(LinkErrorState(message: _mapFailureMessage(failure: failure)));
@@ -38,7 +40,20 @@ class LinkBloc extends Bloc<LinkEvent, LinkState> {
           (links) {
             emit(
               LinkSuccessState(
-                links: links.map<LinkModel>((link) => LinkModel(name: link.name, url: link.url, id: link.id)).toList(),
+                links: links
+                    .map<LinkModel>(
+                      (link) => LinkModel(
+                        username: link.username,
+                        link: link.link,
+                        id: link.id,
+                        isActive: link.isActive,
+                        title: link.title,
+                        createdAt: link.createdAt,
+                        userId: link.userId,
+                        updatedAt: link.updatedAt,
+                      ),
+                    )
+                    .toList(),
               ),
             );
           },

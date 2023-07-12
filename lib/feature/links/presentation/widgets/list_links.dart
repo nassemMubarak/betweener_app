@@ -1,4 +1,5 @@
 import 'package:betweener_app/core/extensions/num_extension.dart';
+import 'package:betweener_app/feature/links/data/models/link_model.dart';
 import 'package:betweener_app/feature/links/presentation/screens/edit_link.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,9 +7,11 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ListOfLinks extends StatelessWidget {
   final bool isUser;
+  final List<LinkModel> links;
 
   const ListOfLinks({
     this.isUser = false,
+    required this.links,
     super.key,
   });
 
@@ -18,7 +21,7 @@ class ListOfLinks extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30.w),
         child: ListView.builder(
-          itemCount: 5,
+          itemCount: links.length,
           itemBuilder: (context, index) {
             return Column(
               children: [
@@ -70,7 +73,7 @@ class ListOfLinks extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                            'Instagram'.toUpperCase(),
+                            links[index].title.toUpperCase(),
                             style: TextStyle(
                               letterSpacing: 2.8,
                               fontSize: 14.sp,
@@ -78,7 +81,7 @@ class ListOfLinks extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Instagram.com/ba/dssd',
+                            links[index].link,
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: index % 2 == 0 ? const Color(0xff9B6A73) : const Color(0xff807D99),

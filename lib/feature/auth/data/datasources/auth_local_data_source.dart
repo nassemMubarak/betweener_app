@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:betweener_app/core/error/exception.dart';
+import 'package:betweener_app/core/shared_pref/shared_pref.dart';
 import 'package:dartz/dartz.dart';
 
-import '../../../../core/shared_pref/shared_pref.dart';
 import '../models/user_model.dart';
 
 abstract class AuthLocalDataSource {

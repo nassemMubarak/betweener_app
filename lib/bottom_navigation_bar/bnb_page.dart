@@ -11,19 +11,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BnbPage extends StatelessWidget {
   final User user;
-    BnbPage({required this.user, Key? key}) : super(key: key);
+  const BnbPage({required this.user, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> body = [
-    const ActiveSharing(),
-    HomePage(user: user),
-    const ProfileScreen(),
+      const ActiveSharing(),
+      HomePage(user: user),
+      const ProfileScreen(),
     ];
     final List<AppBar> appBars = [
-    ActiveSharing.appBar(),
-    HomePage.appBar(),
-    ProfileScreen.appBar(),
+      ActiveSharing.appBar(),
+      HomePage.appBar(),
+      ProfileScreen.appBar(),
     ];
 
     return BlocProvider<BnbBloc>(
