@@ -39,7 +39,7 @@ class _HandelFingerPageState extends State<HandelFingerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: InkWell(
+      body: GestureDetector(
         onTap: ()async{
                 await finger();
         },

@@ -1,8 +1,10 @@
+import 'package:betweener_app/core/extensions/context_extension.dart';
 import 'package:betweener_app/core/extensions/num_extension.dart';
 import 'package:betweener_app/feature/links/data/models/link_model.dart';
 import 'package:betweener_app/feature/links/presentation/bolc/link_update/link_update_bloc.dart';
 import 'package:betweener_app/feature/links/presentation/screens/edit_link.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -76,34 +78,41 @@ class ListOfLinks extends StatelessWidget {
                             ),
                           ],
                         ),
-                  child: ListTile(
-                    title: Container(
-                      height: 58.h,
-                      padding: EdgeInsets.symmetric(horizontal: 13.w),
-                      decoration: BoxDecoration(
-                        color: index % 2 == 0 ? const Color(0xffFEE2E7) : const Color(0xffE7E5F1),
-                        borderRadius: BorderRadius.all(Radius.circular(12.r)),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            links[index].title.toUpperCase(),
-                            style: TextStyle(
-                              letterSpacing: 2.8,
-                              fontSize: 14.sp,
-                              color: index % 2 == 0 ? const Color(0xff783341) : const Color(0xff2D2B4E),
+                  child: GestureDetector(
+                    onTap: (){
+                      Clipboard.setData(
+                          ClipboardData(text: links[index].link));
+                      context.showSnackBarCopyText(message: 'تم نسخ الرابط بنجاح');
+                    },
+                    child: ListTile(
+                      title: Container(
+                        height: 58.h,
+                        padding: EdgeInsets.symmetric(horizontal: 13.w),
+                        decoration: BoxDecoration(
+                          color: index % 2 == 0 ? const Color(0xffFEE2E7) : const Color(0xffE7E5F1),
+                          borderRadius: BorderRadius.all(Radius.circular(12.r)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              links[index].title.toUpperCase(),
+                              style: TextStyle(
+                                letterSpacing: 2.8,
+                                fontSize: 14.sp,
+                                color: index % 2 == 0 ? const Color(0xff783341) : const Color(0xff2D2B4E),
+                              ),
                             ),
-                          ),
-                          Text(
-                            links[index].link,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: index % 2 == 0 ? const Color(0xff9B6A73) : const Color(0xff807D99),
+                            Text(
+                              links[index].link,
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: index % 2 == 0 ? const Color(0xff9B6A73) : const Color(0xff807D99),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

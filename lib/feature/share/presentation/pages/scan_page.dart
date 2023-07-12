@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:betweener_app/bottom_navigation_bar/bnb_page.dart';
 import 'package:betweener_app/core/widgets/text_widget.dart';
 import 'package:betweener_app/feature/auth/data/models/user_model.dart';
+import 'package:betweener_app/feature/auth/prssentation/pages/show_profile_user_page.dart';
 import 'package:betweener_app/feature/links/presentation/screens/profile_screen.dart';
 import 'package:betweener_app/feature/share/presentation/pages/home_page.dart';
 import 'package:flutter/foundation.dart';
@@ -31,13 +32,26 @@ class _ScanPageState extends State<ScanPage> {
   void reassemble() {
     super.reassemble();
     if (Platform.isAndroid) {
-      controller?.pauseCamera();
+      controller?.stopCamera();
     } else if (Platform.isIOS) {
       controller?.resumeCamera();
     }
   }
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (result != null) {
+        Map<String, dynamic> data = jsonDecode(result!.code.toString());
+        UserModel userModel = UserModel.fromJson(data);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ShowProfileUserPage(user: userModel),
+            ),
+        );
+      }
+    });
+
     return Scaffold(
       appBar: _buildAppBar(context),
       backgroundColor: Colors.black,
@@ -46,20 +60,10 @@ class _ScanPageState extends State<ScanPage> {
   }
 
   Widget _buildBody() {
-    if(result!=null){
-      print('----------+++++++++++++++++++++++++++++++++-------------');
-      Map<String, dynamic> data = jsonDecode(result!.code.toString());
-      UserModel userModel = UserModel.fromJson(data);
-      Navigator.pop(context);
-      print(userModel);
-
-      // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: ), (route) => false);
-    }
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 21.w, vertical: 30.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-
         children: [
           TextWidget(
             text: 'Scan your QR Code',
@@ -74,8 +78,10 @@ class _ScanPageState extends State<ScanPage> {
               key: qrKey,
               onQRViewCreated: _onQRViewCreated,
               overlay: QrScannerOverlayShape(
-                  borderRadius: 10, borderWidth: 5, borderColor: Colors.white),
-
+                borderRadius: 10,
+                borderWidth: 5,
+                borderColor: Colors.white,
+              ),
             ),
           ),
           Expanded(
@@ -83,9 +89,9 @@ class _ScanPageState extends State<ScanPage> {
             child: Center(
               child: (result != null)
                   ? Text(
-                  'Barcode Type: ${describeEnum(result!.format)}   Data: ${result?.code}',style: TextStyle(
-                color: Colors.blue
-              ),)
+                'Barcode Type: ${describeEnum(result!.format)}   Data: ${result?.code}',
+                style: TextStyle(color: Colors.blue),
+              )
                   : Text('Scan a code'),
             ),
           )
@@ -93,6 +99,7 @@ class _ScanPageState extends State<ScanPage> {
       ),
     );
   }
+
 
   AppBar _buildAppBar(BuildContext context){
     return AppBar(
@@ -107,21 +114,23 @@ class _ScanPageState extends State<ScanPage> {
 
     );
   }
-  navigatorPop(BuildContext context){
-    Navigator.pop(context);
-  }
+
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
-
       });
+      controller?.stopCamera();
+      controller?.dispose();
+
     });
   }
-  @override
+@override
   void dispose() {
-    controller?.dispose();
-    super.dispose();
+  controller?.stopCamera();
+  controller?.dispose();
+
+  super.dispose();
   }
 }

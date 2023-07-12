@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:betweener_app/core/extensions/context_extension.dart';
 import 'package:betweener_app/core/widgets/loading_widget.dart';
 import 'package:betweener_app/core/widgets/text_widget.dart';
 import 'package:betweener_app/feature/auth/data/models/user_model.dart';
@@ -8,6 +9,7 @@ import 'package:betweener_app/feature/links/presentation/screens/add_link.dart';
 import 'package:betweener_app/feature/share/presentation/pages/scan_page.dart';
 import 'package:betweener_app/feature/share/presentation/widgets/home_page/container_in_home_page_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -43,10 +45,17 @@ class HomePage extends StatelessWidget {
               fontSize: 20.sp,
             ),
             SizedBox(height: 16.h),
-            Container(
-              padding: EdgeInsets.all(30),
-              alignment: Alignment.center,
-              child: QrImageView(data: json.encode(userModel.toJson())),
+            GestureDetector(
+              onTap: () {
+                Clipboard.setData(
+                    ClipboardData(text: 'https://betweener.page.link/Zi7X'));
+                context.showSnackBarCopyText(message: 'تم نسخ الرابط بنجاح');
+              },
+              child: Container(
+                padding: EdgeInsets.all(30),
+                alignment: Alignment.center,
+                child: QrImageView(data: json.encode(userModel.toJson())),
+              ),
             ),
             SizedBox(height: 10.h),
             Divider(
@@ -62,28 +71,45 @@ class HomePage extends StatelessWidget {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 physics: BouncingScrollPhysics(),
-                child: BlocBuilder<LinkBloc,LinkState>(
+                child: BlocBuilder<LinkBloc, LinkState>(
                   builder: (context, state) {
-                    if(state is LinkSuccessState){
-                      print(state.links!.length);
-                     return Container(
-                       height: 85.h,
-                       width: 1.sw,
-                       child: ListView.builder(
+                    if (state is LinkSuccessState) {
+                      return Container(
+                        height: 85.h,
+                        width: 1.sw,
+                        child: ListView.builder(
                           physics: BouncingScrollPhysics(),
-                          itemCount: state.links!.length,
+                          itemCount: state.links!.length + 1,
                           scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index){
-                            if(index==state.links!.length-1){
-                             return ContainerInHomePageWidget(subTitle: 'Add More', margin: 10.w,onTap: (){
-                               Navigator.push(context, MaterialPageRoute(builder: (_)=>AddLink(username: userModel.name)));
-                             },);
-                            }else{
-                            return  ContainerInHomePageWidget(
-                                  title: state.links![index].title, subTitle: state.links![index].link,margin: 10,);
+                          itemBuilder: (context, index) {
+                            print(index);
+                            if (index < state.links!.length) {
+                              return ContainerInHomePageWidget(
+                                title: state.links![index].title,
+                                subTitle: state.links![index].link,
+                                margin: 10,
+                                onTap: (){
+                                  Clipboard.setData(
+                                      ClipboardData(text: state.links![index].link));
+                                  context.showSnackBarCopyText(message: 'تم نسخ الرابط بنجاح');
+                                },
+                              );
+                            } else {
+                              return ContainerInHomePageWidget(
+                                subTitle: 'Add More',
+                                margin: 10.w,
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => AddLink(
+                                              username: userModel.name)));
+                                },
+                              );
                             }
-                          },),
-                     );
+                          },
+                        ),
+                      );
                     }
                     return Container();
                   },
@@ -95,6 +121,7 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
 /*
 Row(
                   children: [

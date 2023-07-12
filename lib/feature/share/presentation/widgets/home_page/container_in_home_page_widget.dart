@@ -13,7 +13,7 @@ class ContainerInHomePageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: Container(
         margin: EdgeInsetsDirectional.only(start: margin??5.w),
