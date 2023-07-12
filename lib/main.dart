@@ -39,20 +39,6 @@ class MyApp extends StatelessWidget {
           },
         ));
   }
-
-  // Widget _initialPage() {
-  //   return BlocBuilder<AuthBloc, AuthState>(
-  //     builder: (context, state) {
-  //       if (state is AuthLoadedUserState) {
-  //         return BnbPage();
-  //       } else if (state is AuthInitial) {
-  //         return LoginPage();
-  //       }
-  //       return LoginPage();
-  //     },
-  //   );
-  // }
-
   Widget _initialPage() {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {

@@ -1,6 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:betweener_app/core/widgets/text_widget.dart';
+import 'package:betweener_app/feature/auth/data/models/user_model.dart';
+import 'package:betweener_app/feature/links/presentation/screens/profile_screen.dart';
+import 'package:betweener_app/feature/share/presentation/pages/home_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,6 +45,16 @@ class _ScanPageState extends State<ScanPage> {
   }
 
   Widget _buildBody() {
+    if(result!=null){
+      print('----------+++++++++++++++++++++++++++++++++-------------');
+      Map<String, dynamic> data = jsonDecode(result!.code.toString());
+      UserModel userModel = UserModel.fromJson(data);
+      Navigator.pop(context);
+      print(userModel);
+
+      print('----------+++++++++++++++++++++++++++++++++-------------');
+      // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: HomePage()), (route) => false);
+    }
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 21.w, vertical: 30.h),
       child: Column(
@@ -61,6 +75,7 @@ class _ScanPageState extends State<ScanPage> {
               onQRViewCreated: _onQRViewCreated,
               overlay: QrScannerOverlayShape(
                   borderRadius: 10, borderWidth: 5, borderColor: Colors.white),
+
             ),
           ),
           Expanded(
@@ -68,7 +83,9 @@ class _ScanPageState extends State<ScanPage> {
             child: Center(
               child: (result != null)
                   ? Text(
-                  'Barcode Type: ${describeEnum(result!.format)}   Data: ${result?.code}')
+                  'Barcode Type: ${describeEnum(result!.format)}   Data: ${result?.code}',style: TextStyle(
+                color: Colors.blue
+              ),)
                   : Text('Scan a code'),
             ),
           )
@@ -90,15 +107,21 @@ class _ScanPageState extends State<ScanPage> {
 
     );
   }
-
+  navigatorPop(BuildContext context){
+    Navigator.pop(context);
+  }
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
+
       });
     });
-    controller.pauseCamera();
-    controller.resumeCamera();
+  }
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
   }
 }
